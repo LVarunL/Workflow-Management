@@ -2,8 +2,9 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack")
 module.exports = {
+
   module: {
-   
+
     rules: [
       {
         test: /\.(js|jsx)$/,
@@ -16,9 +17,13 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: {
-            loader: 'ts-loader'
+          loader: 'ts-loader'
         }
-      }
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
@@ -31,11 +36,11 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
-  }),
+    }),
   ],
   devServer: {
-    port: 3000, 
-    open: true, 
+    port: 3000,
+    open: true,
     hot: true,
     historyApiFallback: true
   },
@@ -48,12 +53,12 @@ module.exports = {
       "stream": require.resolve("stream-browserify"),
       "util": require.resolve("util/"),
       "buffer": require.resolve("buffer/")
-     
+
     },
     // fallback: {
     //   "vm": require.resolve("vm-browserify")
     // }
 
-    
+
   },
 };

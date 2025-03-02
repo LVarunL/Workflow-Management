@@ -17,3 +17,9 @@ export enum ToastSeverity {
   WARNING = "warning",
   INFO = "info",
 }
+
+export enum BreadcrumbContext {
+  ALL_TASKS = "All Tasks",
+  MY_TASKS = "My Tasks",
+  PEOPLE = "People",
+}

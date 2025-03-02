@@ -8,6 +8,7 @@ import { Signup, Login } from "./modules/auth/AuthComponents";
 import { ToastProvider } from "./common/components/Snackbar/SnackbarContext";
 
 import { getAuth } from "./common/utils/authUtil";
+import WorkspaceDashboard from "./modules/workspaceDashboard/WorkspaceDashboard";
 export default function App() {
   const PrivateRoutes = () => {
     return getAuth() ? <Outlet /> : <Navigate to="/login" />;
@@ -18,6 +19,10 @@ export default function App() {
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<ChooseWorkspace />}></Route>
+            <Route
+              path="/workspaces/:workspaceName"
+              element={<WorkspaceDashboard />}
+            ></Route>
           </Route>
 
           <Route path="/signup" element={<Signup />}></Route>
