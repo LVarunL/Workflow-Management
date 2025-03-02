@@ -1,21 +1,20 @@
 import { User, UserModelUtil } from "../models/User";
-const { validatePassword, addUser, findUserByEmail } = UserModelUtil;
 
 interface Response {
   responseCode: Number;
   responseMessage: string;
   accessToken?: string;
 }
-const AuthController = (function () {
-  function signin(email: string, password: string): Response {
+class AuthControllerClass {
+  signin(email: string, password: string): Response {
     const user: User = { email: email, password: password };
-    if (!findUserByEmail(email)) {
+    if (!UserModelUtil.findUserByEmail(email)) {
       return {
         responseCode: 404,
         responseMessage: "User Not Found!",
       };
     }
-    const token = validatePassword(user);
+    const token = UserModelUtil.validatePassword(user);
     if (!token) {
       return {
         responseCode: 401,
@@ -29,9 +28,9 @@ const AuthController = (function () {
     };
   }
 
-  function signup(email: string, password: string): Response {
+  signup(email: string, password: string): Response {
     const user = { email: email, password: password };
-    const isExistingUser = findUserByEmail(email);
+    const isExistingUser = UserModelUtil.findUserByEmail(email);
     console.log(user, "here");
     if (isExistingUser?.email) {
       return {
@@ -40,17 +39,12 @@ const AuthController = (function () {
       };
     }
 
-    addUser(user);
+    UserModelUtil.addUser(user);
     return {
       responseCode: 200,
       responseMessage: "User registered successfully",
     };
   }
-
-  return {
-    signin,
-    signup,
-  };
-})();
-
+}
+const AuthController = new AuthControllerClass();
 export default AuthController;

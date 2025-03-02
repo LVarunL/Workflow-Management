@@ -1,7 +1,7 @@
 import AuthController from "../controllers/authController";
 import { saveToken, removeToken } from "../common/utils/authUtil";
-const AuthServices = (function () {
-  function login(
+class AuthServicesClass {
+  login(
     email: string,
     password: string
   ): { success: boolean; message?: string } {
@@ -9,29 +9,25 @@ const AuthServices = (function () {
       return { success: false, message: "Email and password are required" };
     }
 
-    try {
-      const response = AuthController.signin(email, password);
-      const responseCode = response.responseCode;
+    const response = AuthController.signin(email, password);
+    const responseCode = response.responseCode;
 
-      if (responseCode === 404) {
-        return { success: false, message: "User not found" };
-      } else if (responseCode === 401) {
-        return { success: false, message: "Incorrect password" };
-      } else if (responseCode === 200) {
-        saveToken(response.accessToken);
-        return { success: true };
-      } else {
-        return {
-          success: false,
-          message: "Unexpected error. Please try again.",
-        };
-      }
-    } catch (error) {
-      return { success: false, message: "Network error. Please try again." };
+    if (responseCode === 404) {
+      return { success: false, message: "User not found" };
+    } else if (responseCode === 401) {
+      return { success: false, message: "Incorrect password" };
+    } else if (responseCode === 200) {
+      saveToken(response.accessToken);
+      return { success: true };
+    } else {
+      return {
+        success: false,
+        message: "Unexpected error. Please try again.",
+      };
     }
   }
 
-  function register(
+  register(
     email: string,
     password: string,
     confirmPassword: string
@@ -59,28 +55,21 @@ const AuthServices = (function () {
       return { success: false, message: "Passwords do not match" };
     }
 
-    try {
-      const response = AuthController.signup(email, password);
-      const responseCode = response.responseCode;
+    const response = AuthController.signup(email, password);
+    console.log(response);
+    const responseCode = response.responseCode;
 
-      if (responseCode === 200) {
-        return { success: true };
-      } else {
-        return { success: false, message: "Signup failed. Try again." };
-      }
-    } catch (error) {
-      return { success: false, message: "Network error. Please try again." };
+    if (responseCode === 200) {
+      return { success: true };
+    } else {
+      return { success: false, message: "Signup failed. Try again." };
     }
   }
 
-  function logout() {
+  logout() {
     removeToken();
   }
-
-  return {
-    login,
-    register,
-  };
-})();
+}
+const AuthServices = new AuthServicesClass();
 
 export default AuthServices;

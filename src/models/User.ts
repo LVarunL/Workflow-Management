@@ -1,54 +1,92 @@
-import { JwtPayload } from "jsonwebtoken"
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = "WHATCANITBEOTHER"
+import { JwtPayload } from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
+const SECRET_KEY = "WHATCANITBEOTHER";
+
 interface User {
   email: string;
   password: string;
 }
 
-const UserModelUtil = (function () {
+class UserModelUtilClass {
   //public functions
-  const getUsers = function (): Array<User> {
+  getUsers = function (): Array<User> {
     return JSON.parse(localStorage.getItem("users") || "[]");
   };
 
-  const findUserByEmail = function (email: string): User {
+  findUserByEmail = function (email: string): User {
     // const users = getUsers();
     // const user = users.find((user)=>user.email===email);
     // return user;
-    return getUsers().find((user: User) => user.email === email);
+    return this.getUsers().find((user: User) => user.email === email);
   };
 
-  const addUser = function (user: User) {
+  addUser = function (user: User) {
     //returning false indicates already existing user
-    const users = getUsers();
+    const users = this.getUsers();
     users.push(user);
-    saveUsers(users);
-    
+    this.saveUsers(users);
   };
 
-  
-  const validatePassword = function (userToValidate: User): string {
-    const user = findUserByEmail(userToValidate.email);
-    if(user.password!==userToValidate.password) return null;
-    return generateToken(user.email);
+  validatePassword = function (userToValidate: User): string {
+    const user = this.findUserByEmail(userToValidate.email);
+    if (user.password !== userToValidate.password) return null;
+    return this.generateToken(user.email);
   };
 
-  const verifyToken = function(token: string): string | JwtPayload{
-    return jwt.verify(token, SECRET_KEY); 
-  }
+  verifyToken = function (token: string): string | JwtPayload {
+    return jwt.verify(token, SECRET_KEY);
+  };
 
   //private functions
-  const saveUsers = function (users: User[]) {
+  saveUsers = function (users: User[]) {
     localStorage.setItem("users", JSON.stringify(users));
   };
-  const generateToken = function (email: string): string {
+  generateToken = function (email: string): string {
     const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
     return token;
   };
+}
+// const UserModelUtil = (function () {
+//   //public functions
+//   const getUsers = function (): Array<User> {
+//     return JSON.parse(localStorage.getItem("users") || "[]");
+//   };
 
+//   const findUserByEmail = function (email: string): User {
+//     // const users = getUsers();
+//     // const user = users.find((user)=>user.email===email);
+//     // return user;
+//     return getUsers().find((user: User) => user.email === email);
+//   };
 
-  return { getUsers, findUserByEmail, addUser, validatePassword };
-})();
+//   const addUser = function (user: User) {
+//     //returning false indicates already existing user
+//     const users = getUsers();
+//     users.push(user);
+//     saveUsers(users);
+//   };
 
+//   const validatePassword = function (userToValidate: User): string {
+//     const user = findUserByEmail(userToValidate.email);
+//     if (user.password !== userToValidate.password) return null;
+//     return generateToken(user.email);
+//   };
+
+//   const verifyToken = function (token: string): string | JwtPayload {
+//     return jwt.verify(token, SECRET_KEY);
+//   };
+
+//   //private functions
+//   const saveUsers = function (users: User[]) {
+//     localStorage.setItem("users", JSON.stringify(users));
+//   };
+//   const generateToken = function (email: string): string {
+//     const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
+//     return token;
+//   };
+
+//   return { getUsers, findUserByEmail, addUser, validatePassword };
+// })();
+
+const UserModelUtil = new UserModelUtilClass();
 export { User, UserModelUtil };

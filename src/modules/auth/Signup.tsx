@@ -4,6 +4,7 @@ import { AuthCard } from "./AuthCard";
 import AuthServices from "../../services/authServices";
 import { useNavigate } from "react-router";
 import { useToast } from "../../common/components/Snackbar/SnackbarContext";
+import { ToastSeverity } from "../../common/utils/enums";
 const Signup = function () {
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -15,10 +16,10 @@ const Signup = function () {
     const response = AuthServices.register(email, password, confirmPassword);
 
     if (response.success) {
-      showToast("Email registered successfully", "success");
+      showToast("Email registered successfully", ToastSeverity.SUCCESS);
       setTimeout(() => navigate("/login"), 500);
     } else {
-      showToast(response.message || "Signup failed", "error");
+      showToast(response.message || "Signup failed", ToastSeverity.ERROR);
     }
   }
   return (

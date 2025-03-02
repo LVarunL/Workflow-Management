@@ -1,17 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
-
+import { ToastSeverity } from "../../utils/enums";
 type ToastContextType = {
-  showToast: (
-    message: string,
-    severity?: "success" | "error" | "warning" | "info"
-  ) => void;
+  showToast: (message: string, severity?: ToastSeverity) => void;
 };
 
 interface ToastState {
   open: boolean;
   message: string;
-  severity: "success" | "error" | "warning" | "info";
+  severity: ToastSeverity;
 }
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
@@ -19,13 +16,10 @@ export const ToastProvider = ({ children }) => {
   const [toast, setToast] = useState<ToastState>({
     open: false,
     message: "",
-    severity: "success",
+    severity: ToastSeverity.SUCCESS,
   });
 
-  const showToast = (
-    message: string,
-    severity: "success" | "error" | "warning" | "info" = "success"
-  ) => {
+  const showToast = (message: string, severity: ToastSeverity) => {
     setToast({ open: true, message, severity });
   };
 

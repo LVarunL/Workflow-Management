@@ -3,6 +3,7 @@ import { AuthCard } from "./AuthCard";
 import { useNavigate } from "react-router";
 import AuthServices from "../../services/authServices";
 import { useToast } from "../../common/components/Snackbar/SnackbarContext";
+import { ToastSeverity } from "../../common/utils/enums";
 const Login = function () {
   const { showToast } = useToast();
   const navigate = useNavigate();
@@ -10,10 +11,10 @@ const Login = function () {
     const response = AuthServices.login(email, password);
 
     if (response.success) {
-      showToast("Login Successful", "success");
+      showToast("Login Successful", ToastSeverity.SUCCESS);
       navigate("/");
     } else {
-      showToast(response.message || "Login failed", "error");
+      showToast(response.message || "Login failed", ToastSeverity.ERROR);
     }
   };
 
