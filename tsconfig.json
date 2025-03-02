@@ -1,15 +1,14 @@
 {
-    "compilerOptions": {
+  "compilerOptions": {
     //   "target": "esnext",
     //   "module": "esnext",
     //   "strict": true,
     //   "skipLibCheck": true,
-      "esModuleInterop": true,
+    "esModuleInterop": true,
     //   "allowJs": true,
-      "jsx": "react-jsx",
-      "moduleResolution": "node"
-    },
-    "include": ["src"],
-    "exclude": ["node_modules"]
-  }
-  
+    "jsx": "react-jsx",
+    "moduleResolution": "node"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
