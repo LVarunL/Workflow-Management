@@ -23,3 +23,9 @@ export enum BreadcrumbContext {
   MY_TASKS = "My Tasks",
   PEOPLE = "People",
 }
+
+export enum ViewType {
+  TABLE = "Table",
+  KANBAN = "Kanban",
+  CALENDAR = "Calendar",
+}
