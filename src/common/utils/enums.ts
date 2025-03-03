@@ -29,3 +29,9 @@ export enum ViewType {
   KANBAN = "Kanban",
   CALENDAR = "Calendar",
 }
+
+export enum LocalStorageKeys {
+  USERS = "users",
+  WORKSPACES = "workspaces",
+  AUTH = "auth",
+}

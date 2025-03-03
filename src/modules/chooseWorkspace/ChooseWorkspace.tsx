@@ -1,39 +1,35 @@
 import React from "react";
-import IconBreadcrumbs from "../../common/components/Breadcrumbs/Breadcrumbs";
-import { BreadcrumbContext } from "../../common/utils/enums";
-import MyButtons from "../../common/components/Buttons/Buttons";
-import { useSelectDialog } from "../../common/components/SelectDialog/SelectDialogu";
-import ontic from "../../assets/images/ontic.png";
-import csoc from "../../assets/images/csoc.png";
-import icm from "../../assets/images/icm.png";
 import { useNavigate } from "react-router";
-const workspaces = [
-  {
-    value: "Ontic",
-    name: "Ontic",
-    image: ontic,
-    description: "OnticDescription",
-  },
-  { value: "CSOC", name: "CSOC", image: csoc, description: "CSOCDescription" },
-  { value: "ICM", name: "ICM", image: icm, description: "ICMDescription" },
-];
-const ChooseWorkspace = function () {
+import WorkspaceServices from "../../services/workspaceServices";
+import Workspace from "../../models/Workspace";
+import { Option } from "../../common/utils/interfaces";
+import { useSelectDialog } from "../../common/components/SelectDialog/SelectDialogu";
+import CreateWorkspaceForm from "../../common/components/Forms/CreateWorkspaceForm";
+
+const workspaces: Workspace[] = WorkspaceServices.getWorkspaces();
+const workspacesDropdownOptions: Option[] = workspaces.map((workspace) => ({
+  value: workspace.id,
+  name: workspace.workspaceName,
+  description: workspace.workspaceDescription,
+  image: workspace.workspaceImage,
+}));
+
+const ChooseWorkspace = () => {
   const navigate = useNavigate();
-  const handleSubmit = function () {
-    navigate(`/workspaces/${selectedValue}?lemon=patan`);
+  const handleSubmit = () => {
+    navigate(`/workspaces/${selectedValue}`);
   };
-  const { dialog, selectedValue, setOpen } = useSelectDialog({
+
+  const { dialog, selectedValue } = useSelectDialog({
     title: "Workspace",
-    options: workspaces,
+    options: workspacesDropdownOptions,
     defaultOpen: true,
     onSubmit: handleSubmit,
+    addButton: true,
+    AddForm: CreateWorkspaceForm,
   });
-  return (
-    <div>
-      {dialog}
-      {selectedValue}
-    </div>
-  );
+
+  return <div>{dialog}</div>;
 };
 
 export { ChooseWorkspace };

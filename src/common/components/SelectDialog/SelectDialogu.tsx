@@ -2,15 +2,10 @@ import React, { useState } from "react";
 import {
   Box,
   Dialog,
-  Button,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControl,
-  MenuItem,
-  Select,
-  Avatar,
-  ListItemText,
 } from "@mui/material";
 import MyButtons from "../Buttons/Buttons";
 import MyInputs from "../Inputs/Inputs";
@@ -19,10 +14,10 @@ import { Option } from "../../utils/interfaces";
 interface SelectDialogProps {
   title: string;
   options: Option[];
-  defaultOpen: boolean;
+  defaultOpen?: boolean;
   onSubmit: () => void;
   addButton?: boolean;
-  AddForm?: React.FC;
+  AddForm?: React.FC<{ onClose: () => void }>;
 }
 
 export function useSelectDialog({
@@ -34,34 +29,62 @@ export function useSelectDialog({
   AddForm,
 }: SelectDialogProps) {
   const [open, setOpen] = useState(defaultOpen);
+  const [showAddForm, setShowAddForm] = useState(false);
   const { dropdown, selectedValue } = MyInputs.useDropDownSelect({
     options,
     title,
   });
+
   const dialog = open && (
     <Dialog open onClose={() => setOpen(false)}>
-      <DialogTitle>Select {title}</DialogTitle>
+      <DialogTitle>
+        {showAddForm ? `Create ${title}` : `Select ${title}`}
+      </DialogTitle>
       <DialogContent>
         <Box
           component="form"
-          sx={{ display: "flex", flexWrap: "wrap", minWidth: 300 }}
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            minWidth: 300,
+            flexDirection: "column",
+            gap: 2,
+          }}
         >
-          <FormControl sx={{ m: 2, minWidth: 300 }}>{dropdown}</FormControl>
-          {addButton && <AddForm></AddForm>}
+          {!showAddForm ? (
+            <>
+              <FormControl sx={{ minWidth: 300 }}>{dropdown}</FormControl>
+              {addButton && (
+                <div>
+                  <MyButtons.AddButton
+                    text={`Create New ${title}`}
+                    onClick={() => setShowAddForm(true)}
+                    width={300}
+                  ></MyButtons.AddButton>
+                </div>
+              )}
+            </>
+          ) : (
+            AddForm && <AddForm onClose={() => setShowAddForm(false)} />
+          )}
         </Box>
       </DialogContent>
       <DialogActions>
-        <MyButtons.CloseModalButton
-          text="Cancel"
-          onClick={() => setOpen(false)}
-        ></MyButtons.CloseModalButton>
-        <MyButtons.SubmitButton
-          text="OK"
-          onClick={() => {
-            setOpen(false);
-            onSubmit();
-          }}
-        ></MyButtons.SubmitButton>
+        {!showAddForm ? (
+          <>
+            <MyButtons.CloseModalButton
+              text="Cancel"
+              onClick={() => setOpen(false)}
+            />
+            <MyButtons.SubmitButton
+              text="OK"
+              onClick={() => {
+                setOpen(false);
+                onSubmit();
+              }}
+            />
+          </>
+        ) : null}
       </DialogActions>
     </Dialog>
   );

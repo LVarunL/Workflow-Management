@@ -5,7 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { Typography } from "@mui/material";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 const SubmitButton = ({
   text = "Submit",
   onClick,
@@ -28,12 +29,21 @@ const SubmitButton = ({
 const AddButton = ({
   text = "Add",
   onClick,
+  width = 250,
+  fontSize = 12,
 }: {
   text?: string;
   onClick?: () => void;
+  width?: number;
+  fontSize?: number;
 }) => (
-  <Button variant="outlined" startIcon={<AddIcon />} onClick={onClick}>
-    {text}
+  <Button
+    variant="outlined"
+    startIcon={<AddIcon />}
+    onClick={onClick}
+    sx={{ width: width }}
+  >
+    <Typography fontSize={fontSize}>{text}</Typography>
   </Button>
 );
 
@@ -78,6 +88,19 @@ const CloseModalIcon = () => (
   </IconButton>
 );
 
+const InviteButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <Button
+      variant="contained"
+      color="secondary"
+      startIcon={<PersonAddIcon />}
+      onClick={onClick}
+    >
+      Invite People
+    </Button>
+  );
+};
+
 const MyButtons = {
   SubmitButton,
   AddButton,
@@ -87,6 +110,7 @@ const MyButtons = {
   SettingsButton,
   CloseModalButton,
   CloseModalIcon,
+  InviteButton,
 };
 
 export default MyButtons;
