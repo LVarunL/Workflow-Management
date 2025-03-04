@@ -14,7 +14,6 @@ const ChooseWorkspace = () => {
     queryKey: [QueryKeys.WORKSPACES],
     queryFn: WorkspaceServices.getWorkspaces,
   });
-  console.log("rendered");
   const workspacesDropdownOptions: Option[] = data?.map((workspace) => ({
     value: workspace.id,
     name: workspace.workspaceName,
@@ -36,6 +35,7 @@ const ChooseWorkspace = () => {
     canClose: false,
   });
   console.log(selectedValue);
+  if (isPending) return "Loading...";
   return <div>{dialog}</div>;
 };
 

@@ -17,10 +17,11 @@ export function useDropDownSelect({
   title,
   width,
 }: DropdownSelectProps) {
-  const [selectedValue, setSelectedValue] = useState<string>(
-    options[0]?.value || ""
-  );
-
+  const [selectedValue, setSelectedValue] = useState<string>("");
+  useEffect(() => {
+    if (options.length > 0 && selectedValue === "")
+      setSelectedValue(options[0].value);
+  }, [options]);
   const dropdown = (
     <Box sx={{ minWidth: 120, width: width }}>
       <FormControl fullWidth>

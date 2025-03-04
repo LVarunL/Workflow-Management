@@ -1,11 +1,13 @@
 import Workspace from "../models/Workspace";
 import { LocalStorageKeys } from "../common/utils/enums";
 class WorkspaceServicesClass {
-  getWorkspaces(): Workspace[] {
-    const workspaces = JSON.parse(
-      localStorage.getItem(LocalStorageKeys.WORKSPACES) || "[]"
-    );
-    return workspaces;
+  async getWorkspaces(): Promise<Workspace[]> {
+    return new Promise((resolve) => {
+      const workspaces = JSON.parse(
+        localStorage.getItem(LocalStorageKeys.WORKSPACES) || "[]"
+      );
+      resolve(workspaces);
+    });
   }
   saveWorkspaces(workspaces: Workspace[]): void {
     localStorage.setItem(
@@ -13,8 +15,8 @@ class WorkspaceServicesClass {
       JSON.stringify(workspaces)
     );
   }
-  addWorkspace(workspace: Workspace): void {
-    const workspaces = this.getWorkspaces();
+  async addWorkspace(workspace: Workspace): Promise<void> {
+    const workspaces = await this.getWorkspaces();
     workspaces.push(workspace);
     this.saveWorkspaces(workspaces);
   }
