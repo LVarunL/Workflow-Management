@@ -5,24 +5,29 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Avatar, ListItemText } from "@mui/material";
 import { Option } from "../../utils/interfaces";
-
+import { QueryKeys } from "../../utils/enums";
+import { useQueryClient } from "@tanstack/react-query";
+import { Dispatch, SetStateAction } from "react";
 interface DropdownSelectProps {
   options: Option[];
   title?: string;
   width?: number;
+  selectedValue: string;
+  setSelectedValue: Dispatch<SetStateAction<string>>;
 }
 
-export function useDropDownSelect({
+export function DropdownSelect({
   options,
   title,
   width,
+  selectedValue,
+  setSelectedValue,
 }: DropdownSelectProps) {
-  const [selectedValue, setSelectedValue] = useState<string>("");
   useEffect(() => {
     if (options.length > 0 && selectedValue === "")
       setSelectedValue(options[0].value);
   }, [options]);
-  const dropdown = (
+  return (
     <Box sx={{ minWidth: 120, width: width }}>
       <FormControl fullWidth>
         <Select
@@ -55,5 +60,4 @@ export function useDropDownSelect({
       </FormControl>
     </Box>
   );
-  return { dropdown, selectedValue };
 }

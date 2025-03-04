@@ -1,10 +1,10 @@
-import { useDropDownSelect } from "./DropdownSelect";
+import { DropdownSelect } from "./DropdownSelect";
 import { useViewTypeToggle } from "./ChooseViewType";
 import { useDateInput } from "./DatePicker";
 import { useSearchBar } from "./Searchbar";
 import UploadImage from "./UploadImage";
 const MyInputs = {
-  useDropDownSelect,
+  DropdownSelect,
   useViewTypeToggle,
   useDateInput,
   useSearchBar,

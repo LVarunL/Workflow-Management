@@ -10,7 +10,7 @@ import { QueryKeys } from "../../common/utils/enums";
 const ChooseWorkspace = () => {
   //   const workspaces: Workspace[] = WorkspaceServices.getWorkspaces();
 
-  const { isError, error, isPending, data } = useQuery({
+  const { isPending, data } = useQuery({
     queryKey: [QueryKeys.WORKSPACES],
     queryFn: WorkspaceServices.getWorkspaces,
   });

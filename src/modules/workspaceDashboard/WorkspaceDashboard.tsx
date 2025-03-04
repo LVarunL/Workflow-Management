@@ -29,11 +29,7 @@ export default function WorkspaceDashboard() {
       value: "i4",
     },
   ];
-  const { dropdown, selectedValue } = MyInputs.useDropDownSelect({
-    options: options,
-    title: "Title",
-    width: 100,
-  });
+
   const { viewType, viewTypeToggle } = MyInputs.useViewTypeToggle();
   const { dateInput, selectedDate } = MyInputs.useDateInput();
   const { searchBar, searchQuery } = MyInputs.useSearchBar({
@@ -49,8 +45,6 @@ export default function WorkspaceDashboard() {
       <div></div>
       {dateInput}
       <div>{selectedDate.dateString}</div>
-      {dropdown}
-      {selectedValue}
       {viewTypeToggle}
       {viewType}
       {searchBar}

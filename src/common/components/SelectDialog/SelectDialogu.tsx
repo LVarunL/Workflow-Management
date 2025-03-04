@@ -10,6 +10,7 @@ import {
 import MyButtons from "../Buttons/Buttons";
 import MyInputs from "../Inputs/Inputs";
 import { Option } from "../../utils/interfaces";
+import { QueryKeys } from "../../utils/enums";
 
 interface SelectDialogProps {
   title: string;
@@ -32,10 +33,15 @@ export function useSelectDialog({
 }: SelectDialogProps) {
   const [open, setOpen] = useState(defaultOpen);
   const [showAddForm, setShowAddForm] = useState(false);
-  const { dropdown, selectedValue } = MyInputs.useDropDownSelect({
-    options,
-    title,
-  });
+  const [selectedValue, setSelectedValue] = useState("");
+  // const DropdownSelect = MyInputs.useDropDownSelect
+  //   options,
+  //   title,
+  //   selectedValue,
+  //   setSelectedValue,
+  // });
+
+  const DropdownSelect = MyInputs.DropdownSelect;
 
   const dialog = open && (
     <Dialog
@@ -62,7 +68,13 @@ export function useSelectDialog({
         >
           {!showAddForm ? (
             <>
-              <FormControl sx={{ minWidth: 300 }}>{dropdown}</FormControl>
+              <FormControl sx={{ minWidth: 300 }}>
+                <DropdownSelect
+                  options={options}
+                  selectedValue={selectedValue}
+                  setSelectedValue={setSelectedValue}
+                />
+              </FormControl>
               {addButton && (
                 <div>
                   <MyButtons.AddButton
