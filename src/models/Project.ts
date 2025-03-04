@@ -1,9 +1,10 @@
 import { User } from "./User";
-interface Project {
+export interface Project {
   projectId: string;
   workspaceId: string;
   projectName: string;
   projectDescription: string;
   creationTime: Date;
   createdBy: string;
+  userList: Array<string>;
 }

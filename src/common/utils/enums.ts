@@ -34,8 +34,11 @@ export enum LocalStorageKeys {
   USERS = "users",
   WORKSPACES = "workspaces",
   AUTH = "auth",
+  PROJECTS = "projects",
 }
 
 export enum QueryKeys {
   WORKSPACES = "workspaces",
+  PROJECTS = "projects",
+  USERS = "users",
 }

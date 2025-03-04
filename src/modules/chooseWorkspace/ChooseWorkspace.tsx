@@ -7,6 +7,8 @@ import { useSelectDialog } from "../../common/components/SelectDialog/SelectDial
 import CreateWorkspaceForm from "../../common/components/Forms/CreateWorkspaceForm";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../common/utils/enums";
+import CreateProjectForm from "../../common/components/Forms/CreateProjectForm";
+import InviteUserForm from "../../common/components/Forms/InviteUserForm";
 const ChooseWorkspace = () => {
   //   const workspaces: Workspace[] = WorkspaceServices.getWorkspaces();
 
@@ -31,7 +33,7 @@ const ChooseWorkspace = () => {
     defaultOpen: true,
     onSubmit: handleSubmit,
     addButton: true,
-    AddForm: CreateWorkspaceForm,
+    AddForm: InviteUserForm,
     canClose: false,
   });
 

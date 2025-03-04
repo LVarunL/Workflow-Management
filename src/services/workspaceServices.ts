@@ -9,17 +9,30 @@ class WorkspaceServicesClass {
       resolve(workspaces);
     });
   }
-  saveWorkspaces(workspaces: Workspace[]): void {
-    localStorage.setItem(
-      LocalStorageKeys.WORKSPACES,
-      JSON.stringify(workspaces)
-    );
-  }
+
   async addWorkspace(workspace: Workspace): Promise<Workspace> {
     return new Promise(async (resolve) => {
       const workspaces = await this.getWorkspaces();
       workspaces.push(workspace);
-      this.saveWorkspaces(workspaces);
+      localStorage.setItem(
+        LocalStorageKeys.WORKSPACES,
+        JSON.stringify(workspaces)
+      );
+      resolve(workspace);
+    });
+  }
+  async addUsersToWorkspace(workspaceId: string, emails: string[]) {
+    return new Promise(async (resolve) => {
+      const workspaces = await this.getWorkspaces();
+      const workspace = workspaces.find(
+        (workspace) => workspace.id === workspaceId
+      );
+
+      workspace.userList = [...workspace.userList, ...emails];
+      localStorage.setItem(
+        LocalStorageKeys.WORKSPACES,
+        JSON.stringify(workspaces)
+      );
       resolve(workspace);
     });
   }

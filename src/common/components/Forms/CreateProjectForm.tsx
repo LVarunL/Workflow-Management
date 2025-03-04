@@ -1,47 +1,55 @@
 import React, { useState } from "react";
-import { TextField, Stack, Paper, Button } from "@mui/material";
+import {
+  TextField,
+  Stack,
+  Paper,
+  Typography,
+  Button,
+  Chip,
+} from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router";
 
 import MyButtons from "../Buttons/Buttons";
-import MyInputs from "../Inputs/Inputs";
-import WorkspaceServices from "../../../services/workspaceServices";
+import ProjectServices from "../../../services/projectServices";
 import { useToast } from "../Snackbar/SnackbarContext";
 import { QueryKeys, ToastSeverity } from "../../utils/enums";
-import Workspace from "../../../models/Workspace";
+import { Project } from "../../../models/Project";
 
-const CreateWorkspaceForm = ({ onClose }) => {
-  const [workspaceName, setWorkspaceName] = useState("");
-  const [workspaceDescription, setWorkspaceDescription] = useState("");
+const CreateProjectForm = ({ onClose, workspaceId, currentUser }) => {
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
   const navigate = useNavigate();
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (newWorkspace: Workspace) =>
-      WorkspaceServices.addWorkspace(newWorkspace),
-    onSuccess: (workspace) => {
-      showToast("Workspace created successfully", ToastSeverity.SUCCESS);
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.WORKSPACES] });
-      navigate(`/${workspace.id}`);
+    mutationFn: (newProject: Project) => ProjectServices.addProject(newProject),
+    onSuccess: (project) => {
+      showToast("Project created successfully", ToastSeverity.SUCCESS);
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.PROJECTS] });
+      navigate(`/workspace/${workspaceId}/project/${project.projectId}`);
     },
   });
 
   const handleCreate = () => {
-    if (!workspaceName) {
-      showToast("Workspace name is required", ToastSeverity.WARNING);
+    if (!projectName) {
+      showToast("Project name is required", ToastSeverity.WARNING);
       return;
     }
 
-    const newWorkspace = {
-      id: uuid(),
-      workspaceName,
-      workspaceDescription,
-      userList: [], //add current user here
+    const newProject: Project = {
+      projectId: uuid(),
+      workspaceId,
+      projectName,
+      projectDescription,
+      creationTime: new Date(),
+      createdBy: currentUser,
+      userList: [currentUser],
     };
 
-    mutation.mutate(newWorkspace);
+    mutation.mutate(newProject);
   };
 
   return (
@@ -56,21 +64,18 @@ const CreateWorkspaceForm = ({ onClose }) => {
         gap: 2,
       }}
     >
-      <MyInputs.UploadImage />
-
       <TextField
-        placeholder="Workspace Name"
+        placeholder="Project Name"
         variant="standard"
         sx={{
           fontWeight: 500,
           padding: 2,
           borderRadius: 2,
           backgroundColor: "#f8f9fa",
-
           "&:hover": { backgroundColor: "#f1f3f5" },
         }}
-        value={workspaceName}
-        onChange={(e) => setWorkspaceName(e.target.value)}
+        value={projectName}
+        onChange={(e) => setProjectName(e.target.value)}
         required
       />
 
@@ -85,18 +90,18 @@ const CreateWorkspaceForm = ({ onClose }) => {
           backgroundColor: "#f8f9fa",
           "&:hover": { backgroundColor: "#f1f3f5" },
         }}
-        value={workspaceDescription}
-        onChange={(e) => setWorkspaceDescription(e.target.value)}
+        value={projectDescription}
+        onChange={(e) => setProjectDescription(e.target.value)}
       />
-
       <Button variant="outlined" fullWidth>
         + Invite People
       </Button>
-
+      <Typography> Created By</Typography>
+      <Chip label={"lemon.white@ontic.co"} />
       <Stack direction="row" justifyContent="space-between">
         <MyButtons.CloseModalButton text="Cancel" onClick={onClose} />
         <MyButtons.SubmitButton
-          text="Create Workspace"
+          text="Create Project"
           onClick={handleCreate}
           disabled={mutation.isPending}
         />
@@ -105,4 +110,4 @@ const CreateWorkspaceForm = ({ onClose }) => {
   );
 };
 
-export default CreateWorkspaceForm;
+export default CreateProjectForm;
