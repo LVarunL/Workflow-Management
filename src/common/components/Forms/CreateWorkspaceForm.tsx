@@ -24,7 +24,7 @@ const CreateWorkspaceForm = ({ onClose }) => {
     onSuccess: (workspace: Workspace) => {
       showToast("Workspace created successfully", ToastSeverity.SUCCESS);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.WORKSPACES] });
-      navigate(`/workspaces/${workspace.id}`);
+      navigate(`/${workspace.id}`);
     },
   });
 

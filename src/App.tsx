@@ -28,7 +28,7 @@ export default function App() {
               <Route path="/" element={<ChooseWorkspace />}></Route>
               <Route element={<ContentLayout />}>
                 <Route
-                  path="/workspaces/:workspaceName"
+                  path="/:workspaceName"
                   element={<WorkspaceDashboard />}
                 ></Route>
               </Route>

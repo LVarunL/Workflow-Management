@@ -7,11 +7,11 @@ import { Stack, Box } from "@mui/material";
 export default function ContentLayout() {
   return (
     <Stack direction="row">
-      <Box sx={{ width: "10%" }}>
+      <Box sx={{ width: "12%" }}>
         <Sidebar></Sidebar>
       </Box>
 
-      <Stack sx={{ width: "90%" }}>
+      <Stack sx={{ width: "88%" }}>
         <Topbar></Topbar>
         <Outlet />
         <Footer></Footer>

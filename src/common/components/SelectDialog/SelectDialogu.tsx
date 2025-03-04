@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Stack,
   DialogTitle,
   FormControl,
 } from "@mui/material";
@@ -33,12 +34,15 @@ export function useSelectDialog({
 }: SelectDialogProps) {
   const [open, setOpen] = useState(defaultOpen);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedOption, setselectedOption] = useState<Option>({
+    name: "",
+    value: "",
+  });
   // const DropdownSelect = MyInputs.useDropDownSelect
   //   options,
   //   title,
-  //   selectedValue,
-  //   setSelectedValue,
+  //   selectedOption,
+  //   setselectedOption,
   // });
 
   const DropdownSelect = MyInputs.DropdownSelect;
@@ -71,19 +75,17 @@ export function useSelectDialog({
               <FormControl sx={{ minWidth: 300 }}>
                 <DropdownSelect
                   options={options}
-                  selectedValue={selectedValue}
-                  setSelectedValue={setSelectedValue}
+                  selectedOption={selectedOption}
+                  setSelectedOption={setselectedOption}
                 />
               </FormControl>
               {addButton && (
-                <div>
-                  <MyButtons.AddButton
-                    text={`Create New ${title}`}
-                    onClick={() => setShowAddForm(true)}
-                    width={300}
-                    height={20}
-                  ></MyButtons.AddButton>
-                </div>
+                <MyButtons.AddButton
+                  text={`Create New ${title}`}
+                  onClick={() => setShowAddForm(true)}
+                  width={300}
+                  height={20}
+                ></MyButtons.AddButton>
               )}
             </>
           ) : (
@@ -117,5 +119,5 @@ export function useSelectDialog({
     </Dialog>
   );
 
-  return { dialog, selectedValue, setOpen };
+  return { dialog, selectedOption, setOpen };
 }

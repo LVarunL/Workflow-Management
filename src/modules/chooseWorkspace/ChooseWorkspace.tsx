@@ -22,10 +22,10 @@ const ChooseWorkspace = () => {
   }));
   const navigate = useNavigate();
   const handleSubmit = () => {
-    navigate(`/workspaces/${selectedValue}`);
+    navigate(`/${selectedOption.value}`);
   };
 
-  const { dialog, selectedValue } = useSelectDialog({
+  const { dialog, selectedOption } = useSelectDialog({
     title: "Workspace",
     options: workspacesDropdownOptions || [],
     defaultOpen: true,
@@ -34,7 +34,7 @@ const ChooseWorkspace = () => {
     AddForm: CreateWorkspaceForm,
     canClose: false,
   });
-  console.log(selectedValue);
+
   if (isPending) return "Loading...";
   return <div>{dialog}</div>;
 };
