@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -17,7 +17,10 @@ export function useDropDownSelect({
   title,
   width,
 }: DropdownSelectProps) {
-  const [selectedValue, setSelectedValue] = useState<string>(options[0].value);
+  const [selectedValue, setSelectedValue] = useState<string>(
+    options[0]?.value || ""
+  );
+
   const dropdown = (
     <Box sx={{ minWidth: 120, width: width }}>
       <FormControl fullWidth>
@@ -27,10 +30,9 @@ export function useDropDownSelect({
             setSelectedValue(event.target.value);
           }}
           renderValue={(selected) => {
-            const selectedOption = options.find(
+            const selectedOption = options?.find(
               (option) => option.value === selected
             );
-            console.log(selectedOption);
             return (
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 {selectedOption?.image && <Avatar src={selectedOption.image} />}
@@ -39,12 +41,12 @@ export function useDropDownSelect({
             );
           }}
         >
-          {options.map((option) => (
-            <MenuItem value={option.value}>
-              {option.image && <Avatar src={option.image} />}
+          {options?.map((option) => (
+            <MenuItem value={option?.value}>
+              {option.image && <Avatar src={option?.image} />}
               <ListItemText
-                primary={option.name}
-                secondary={option.description}
+                primary={option?.name}
+                secondary={option?.description}
               />
             </MenuItem>
           ))}

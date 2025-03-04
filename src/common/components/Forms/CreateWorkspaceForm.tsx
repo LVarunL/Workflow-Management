@@ -3,12 +3,13 @@ import { TextField, Box, Stack } from "@mui/material";
 
 import MyButtons from "../Buttons/Buttons";
 import WorkspaceServices from "../../../services/workspaceServices";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router";
 import { useToast } from "../Snackbar/SnackbarContext";
 import { ToastSeverity } from "../../utils/enums";
 import Workspace from "../../../models/Workspace";
 import MyInputs from "../Inputs/Inputs";
+import { SetURLSearchParams } from "react-router";
 const CreateWorkspaceForm = ({ onClose }) => {
   const [workspaceName, setWorkspaceName] = useState<string>("");
   const [workspaceDescription, setWorkspaceDescription] = useState<string>("");
@@ -22,7 +23,7 @@ const CreateWorkspaceForm = ({ onClose }) => {
     }
 
     const newWorkspace: Workspace = {
-      id: uuidv4(),
+      id: uuid(),
       workspaceName,
       workspaceDescription,
       userList: [],

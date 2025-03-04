@@ -15,6 +15,7 @@ interface SelectDialogProps {
   title: string;
   options: Option[];
   defaultOpen?: boolean;
+  canClose?: boolean;
   onSubmit: () => void;
   addButton?: boolean;
   AddForm?: React.FC<{ onClose: () => void }>;
@@ -27,6 +28,7 @@ export function useSelectDialog({
   onSubmit,
   addButton = false,
   AddForm,
+  canClose = true,
 }: SelectDialogProps) {
   const [open, setOpen] = useState(defaultOpen);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -36,7 +38,14 @@ export function useSelectDialog({
   });
 
   const dialog = open && (
-    <Dialog open onClose={() => setOpen(false)}>
+    <Dialog
+      open
+      onClose={() => {
+        if (canClose) {
+          setOpen(false);
+        }
+      }}
+    >
       <DialogTitle>
         {showAddForm ? `Create ${title}` : `Select ${title}`}
       </DialogTitle>
@@ -72,10 +81,16 @@ export function useSelectDialog({
       <DialogActions>
         {!showAddForm ? (
           <>
-            <MyButtons.CloseModalButton
-              text="Cancel"
-              onClick={() => setOpen(false)}
-            />
+            {canClose && (
+              <MyButtons.CloseModalButton
+                text="Cancel"
+                onClick={() => {
+                  if (canClose) {
+                    setOpen(false);
+                  }
+                }}
+              />
+            )}
             <MyButtons.SubmitButton
               text="OK"
               onClick={() => {
