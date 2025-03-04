@@ -15,10 +15,13 @@ class WorkspaceServicesClass {
       JSON.stringify(workspaces)
     );
   }
-  async addWorkspace(workspace: Workspace): Promise<void> {
-    const workspaces = await this.getWorkspaces();
-    workspaces.push(workspace);
-    this.saveWorkspaces(workspaces);
+  async addWorkspace(workspace: Workspace): Promise<Workspace> {
+    return new Promise(async (resolve) => {
+      const workspaces = await this.getWorkspaces();
+      workspaces.push(workspace);
+      this.saveWorkspaces(workspaces);
+      resolve(workspace);
+    });
   }
 }
 

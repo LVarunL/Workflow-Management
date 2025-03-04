@@ -32,6 +32,7 @@ export function DropdownSelect({
       <FormControl fullWidth>
         <Select
           value={selectedValue}
+          sx={{ height: 40 }}
           onChange={(event) => {
             setSelectedValue(event.target.value);
           }}
@@ -41,15 +42,22 @@ export function DropdownSelect({
             );
             return (
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                {selectedOption?.image && <Avatar src={selectedOption.image} />}
+                {selectedOption?.image && (
+                  <Avatar
+                    src={selectedOption.image}
+                    sx={{ height: 24, width: 24 }}
+                  />
+                )}
                 <span>{selectedOption?.name}</span>
               </Box>
             );
           }}
         >
           {options?.map((option) => (
-            <MenuItem value={option?.value}>
-              {option.image && <Avatar src={option?.image} />}
+            <MenuItem value={option?.value} sx={{ height: 40 }}>
+              {option.image && (
+                <Avatar src={option?.image} sx={{ height: 24, width: 24 }} />
+              )}
               <ListItemText
                 primary={option?.name}
                 secondary={option?.description}

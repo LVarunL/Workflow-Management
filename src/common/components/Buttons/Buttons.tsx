@@ -31,17 +31,19 @@ const AddButton = ({
   onClick,
   width = 250,
   fontSize = 12,
+  height = 20,
 }: {
   text?: string;
   onClick?: () => void;
   width?: number;
   fontSize?: number;
+  height?: number;
 }) => (
   <Button
     variant="outlined"
     startIcon={<AddIcon />}
     onClick={onClick}
-    sx={{ width: width }}
+    sx={{ width: width, height: height }}
   >
     <Typography fontSize={fontSize}>{text}</Typography>
   </Button>

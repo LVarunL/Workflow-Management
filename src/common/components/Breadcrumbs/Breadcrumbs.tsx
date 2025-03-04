@@ -6,17 +6,17 @@ import FolderIcon from "@mui/icons-material/Folder";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { BreadcrumbContext } from "../../utils/enums";
-interface IconBreadcrumbsProps {
+interface MyBreadcrumbsProps {
   workspace: string;
   project?: string;
   context?: BreadcrumbContext;
 }
 
-export default function IconBreadcrumbs({
+export default function MyBreadcrumbs({
   workspace,
   project,
   context,
-}: IconBreadcrumbsProps) {
+}: MyBreadcrumbsProps) {
   return (
     <Breadcrumbs>
       <Typography

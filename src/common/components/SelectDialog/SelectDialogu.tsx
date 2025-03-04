@@ -81,6 +81,7 @@ export function useSelectDialog({
                     text={`Create New ${title}`}
                     onClick={() => setShowAddForm(true)}
                     width={300}
+                    height={20}
                   ></MyButtons.AddButton>
                 </div>
               )}
