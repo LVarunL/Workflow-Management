@@ -18,9 +18,12 @@ import {
   Add,
 } from "@mui/icons-material";
 import ModalForm from "../../../hooks/FormModal";
-import { FormTitles } from "../../utils/enums";
+import { FormTitles, QueryKeys } from "../../utils/enums";
 import CreateProjectForm from "../Forms/CreateProjectForm";
 import InviteUsersForm from "../Forms/InviteUserForm";
+import { useQuery } from "@tanstack/react-query";
+import WorkspaceServices from "../../../services/workspaceServices";
+import { useParams } from "react-router";
 
 const projects = [];
 for (let i = 1; i <= 10; i += 1) {
@@ -30,6 +33,12 @@ for (let i = 1; i <= 10; i += 1) {
 export default function Sidebar() {
   const [isProjectFormOpen, setIsProjectFormOpen] = useState<boolean>(false);
   const [isInviteFormOpen, setIsInviteFormOpen] = useState<boolean>(false);
+  const params = useParams();
+  const workspaceId = params.workspaceId;
+  const { data: workspace } = useQuery({
+    queryKey: [QueryKeys.WORKSPACES, workspaceId],
+    queryFn: ({ queryKey }) => WorkspaceServices.getWorkspaceById(queryKey[1]),
+  });
   return (
     <>
       <Box
@@ -40,14 +49,22 @@ export default function Sidebar() {
           flexDirection: "column",
           backgroundColor: "#f5f5f2",
           minHeight: "100vh",
+          minWidth: 100,
           // gap: 1,
         }}
       >
         <Typography
           variant="h6"
-          sx={{ fontWeight: "bold", fontSize: 24, marginBottom: 1 }}
+          sx={{
+            fontWeight: "bold",
+            fontSize: 24,
+            marginBottom: 1,
+            display: "flex",
+            alignItems: "center",
+          }}
         >
-          Ontic
+          <img src={workspace?.workspaceImage} width={30} height={30}></img>
+          {workspace?.workspaceName}
         </Typography>
 
         <Divider sx={{ marginBottom: 1 }} />
@@ -121,7 +138,7 @@ export default function Sidebar() {
         >
           <CreateProjectForm
             currentUser="varun@ontic.co"
-            workspaceId="1"
+            workspaceId={workspaceId}
             onClose={() => setIsProjectFormOpen(false)}
           />
         </ModalForm>
@@ -133,7 +150,7 @@ export default function Sidebar() {
           onClose={() => setIsInviteFormOpen(false)}
         >
           <InviteUsersForm
-            entityId="1"
+            entityId={workspaceId}
             type="workspace"
             onClose={() => setIsInviteFormOpen(false)}
           ></InviteUsersForm>

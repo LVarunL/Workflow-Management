@@ -10,6 +10,14 @@ class WorkspaceServicesClass {
     });
   }
 
+  async getWorkspaceById(id: string): Promise<Workspace> {
+    return new Promise(async (resolve) => {
+      const workspaces = await this.getWorkspaces();
+      const workspace = workspaces.find((w) => w.id === id);
+      resolve(workspace);
+    });
+  }
+
   async addWorkspace(workspace: Workspace): Promise<Workspace> {
     return new Promise(async (resolve) => {
       const workspaces = await this.getWorkspaces();

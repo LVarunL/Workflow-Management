@@ -2,11 +2,22 @@ import React, { useState } from "react";
 import { Box, Paper, Card, CardActions, CardContent } from "@mui/material";
 import MyButtons from "../../common/components/Buttons/Buttons";
 import ModalForm from "../../hooks/FormModal";
-import { FormTitles } from "../../common/utils/enums";
+import { FormTitles, QueryKeys } from "../../common/utils/enums";
 import { title } from "process";
 import CreateProjectForm from "../../common/components/Forms/CreateProjectForm";
 import InviteUsersForm from "../../common/components/Forms/InviteUserForm";
+import WorkspaceServices from "../../services/workspaceServices";
+import { useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 export default function WorkspaceDashboard() {
+  const params = useParams();
+  const currentWorkspaceId = params.workspaceId;
+  //   const { data: currentWorkspace } = useQuery({
+  //     queryKey: [QueryKeys.WORKSPACES, currentWorkspaceId],
+  //     queryFn: ({ queryKey }) => {
+  //       return WorkspaceServices.getWorkspaceById(queryKey[1]);
+  //     },
+  //   });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<FormTitles | null>(null);
   const openForm = function (title: FormTitles) {
@@ -23,13 +34,17 @@ export default function WorkspaceDashboard() {
       return (
         <CreateProjectForm
           onClose={closeForm}
-          workspaceId="1" //use workspaceId
+          workspaceId={currentWorkspaceId}
           currentUser="varun@ontic.co" //use current User
         />
       );
     } else if (modalTitle === FormTitles.INVITE) {
       return (
-        <InviteUsersForm type="workspace" onClose={closeForm} entityId="1" /> //use workspaceId
+        <InviteUsersForm
+          type="workspace"
+          onClose={closeForm}
+          entityId={currentWorkspaceId}
+        />
       );
       //   else if(modalTitle===FormTitles.)
     }

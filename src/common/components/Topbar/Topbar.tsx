@@ -5,7 +5,7 @@ import MyButtons from "../Buttons/Buttons";
 export default function Topbar() {
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
-      <MyBreadcrumbs workspace="MyWorkspace" />
+      <MyBreadcrumbs />
       AppName
       <Stack direction="row">
         <MyButtons.ProfileButton /> <MyButtons.SettingsButton />

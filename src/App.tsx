@@ -15,37 +15,42 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ContentLayout from "./common/components/ContentLayout/ContentLayout";
 import ProjectPage from "./modules/projectPage/ProjectPage";
+
+import { store } from "./redux/store";
+import { Provider } from "react-redux";
 export default function App() {
   const PrivateRoutes = () => {
     return getAuth() ? <Outlet /> : <Navigate to="/login" />;
   };
   const queryClient = new QueryClient();
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<PrivateRoutes />}>
-              <Route path="/" element={<ChooseWorkspace />}></Route>
-              <Route element={<ContentLayout />}>
-                <Route
-                  path="/:workspaceId"
-                  element={<WorkspaceDashboard />}
-                ></Route>
-                <Route
-                  path="/:workspaceId/:projectId"
-                  element={<ProjectPage />}
-                ></Route>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <ToastProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<PrivateRoutes />}>
+                <Route path="/" element={<ChooseWorkspace />}></Route>
+                <Route element={<ContentLayout />}>
+                  <Route
+                    path="/:workspaceId"
+                    element={<WorkspaceDashboard />}
+                  ></Route>
+                  <Route
+                    path="/:workspaceId/:projectId"
+                    element={<ProjectPage />}
+                  ></Route>
+                </Route>
               </Route>
-            </Route>
 
-            <Route path="/signup" element={<Signup />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="*" element={<PageNotFound />}></Route>
-          </Routes>
-        </BrowserRouter>
-      </ToastProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+              <Route path="/signup" element={<Signup />}></Route>
+              <Route path="/login" element={<Login />}></Route>
+              <Route path="*" element={<PageNotFound />}></Route>
+            </Routes>
+          </BrowserRouter>
+        </ToastProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </Provider>
   );
 }

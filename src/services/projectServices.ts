@@ -11,6 +11,19 @@ class ProjectServicesClass {
     });
   }
 
+  async getProjectById(id: string): Promise<Project> {
+    return new Promise(async (resolve) => {
+      const projects = await this.getProjects();
+      console.log(id, "inf");
+      console.log(projects, "inf");
+      const project = projects.find((p) => p.projectId === id);
+
+      console.log(project);
+
+      resolve(project);
+    });
+  }
+
   async addProject(project: Project): Promise<Project> {
     return new Promise(async (resolve) => {
       const projects = await this.getProjects();
