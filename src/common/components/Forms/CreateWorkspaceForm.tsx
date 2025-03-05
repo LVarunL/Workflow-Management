@@ -46,7 +46,7 @@ const CreateWorkspaceForm = ({ onClose }) => {
 
   return (
     <Paper
-      elevation={5}
+      elevation={0}
       sx={{
         padding: 3,
         borderRadius: 3,

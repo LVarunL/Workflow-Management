@@ -75,7 +75,7 @@ const InviteUsersForm = ({ entityId, type, onClose }: InviteUsersFormProps) => {
 
   return (
     <Paper
-      elevation={3}
+      elevation={0}
       sx={{
         padding: 3,
         borderRadius: 3,

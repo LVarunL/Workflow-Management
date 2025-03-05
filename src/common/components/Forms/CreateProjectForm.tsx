@@ -6,6 +6,7 @@ import {
   Typography,
   Button,
   Chip,
+  Divider,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { v4 as uuid } from "uuid";
@@ -17,7 +18,16 @@ import { useToast } from "../Snackbar/SnackbarContext";
 import { QueryKeys, ToastSeverity } from "../../utils/enums";
 import { Project } from "../../../models/Project";
 
-const CreateProjectForm = ({ onClose, workspaceId, currentUser }) => {
+interface CreateProjectFormProps {
+  onClose: () => void;
+  workspaceId: string;
+  currentUser: string;
+}
+const CreateProjectForm = ({
+  onClose,
+  workspaceId,
+  currentUser,
+}: CreateProjectFormProps) => {
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const navigate = useNavigate();
@@ -29,7 +39,7 @@ const CreateProjectForm = ({ onClose, workspaceId, currentUser }) => {
     onSuccess: (project) => {
       showToast("Project created successfully", ToastSeverity.SUCCESS);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.PROJECTS] });
-      navigate(`/workspace/${workspaceId}/project/${project.projectId}`);
+      navigate(`/${workspaceId}/${project.projectId}`);
     },
   });
 
@@ -54,7 +64,7 @@ const CreateProjectForm = ({ onClose, workspaceId, currentUser }) => {
 
   return (
     <Paper
-      elevation={5}
+      elevation={0}
       sx={{
         padding: 3,
         borderRadius: 3,
@@ -93,9 +103,7 @@ const CreateProjectForm = ({ onClose, workspaceId, currentUser }) => {
         value={projectDescription}
         onChange={(e) => setProjectDescription(e.target.value)}
       />
-      <Button variant="outlined" fullWidth>
-        + Invite People
-      </Button>
+
       <Typography> Created By</Typography>
       <Chip label={"lemon.white@ontic.co"} />
       <Stack direction="row" justifyContent="space-between">

@@ -28,7 +28,13 @@ class WorkspaceServicesClass {
         (workspace) => workspace.id === workspaceId
       );
 
-      workspace.userList = [...workspace.userList, ...emails];
+      const userList = workspace.userList;
+      emails.forEach((email) => {
+        if (!userList.includes(email)) {
+          userList.push(email);
+        }
+      });
+      workspace.userList = userList;
       localStorage.setItem(
         LocalStorageKeys.WORKSPACES,
         JSON.stringify(workspaces)

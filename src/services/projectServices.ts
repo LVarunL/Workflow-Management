@@ -36,8 +36,13 @@ class ProjectServicesClass {
       const project = projects.find(
         (project) => project.projectId === projectId
       );
-
-      project.userList = [...project.userList, ...emails];
+      const userList = project.userList;
+      emails.forEach((email) => {
+        if (!userList.includes(email)) {
+          userList.push(email);
+        }
+      });
+      project.userList = userList;
       localStorage.setItem(LocalStorageKeys.PROJECTS, JSON.stringify(projects));
       resolve(project);
     });

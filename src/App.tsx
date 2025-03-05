@@ -14,6 +14,7 @@ import PageNotFound from "./modules/PageNotFound";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ContentLayout from "./common/components/ContentLayout/ContentLayout";
+import ProjectPage from "./modules/projectPage/ProjectPage";
 export default function App() {
   const PrivateRoutes = () => {
     return getAuth() ? <Outlet /> : <Navigate to="/login" />;
@@ -28,8 +29,12 @@ export default function App() {
               <Route path="/" element={<ChooseWorkspace />}></Route>
               <Route element={<ContentLayout />}>
                 <Route
-                  path="/:workspaceName"
+                  path="/:workspaceId"
                   element={<WorkspaceDashboard />}
+                ></Route>
+                <Route
+                  path="/:workspaceId/:projectId"
+                  element={<ProjectPage />}
                 ></Route>
               </Route>
             </Route>

@@ -33,7 +33,7 @@ const ChooseWorkspace = () => {
     defaultOpen: true,
     onSubmit: handleSubmit,
     addButton: true,
-    AddForm: InviteUserForm,
+    AddForm: CreateWorkspaceForm,
     canClose: false,
   });
 

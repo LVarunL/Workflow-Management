@@ -42,3 +42,10 @@ export enum QueryKeys {
   PROJECTS = "projects",
   USERS = "users",
 }
+
+export enum FormTitles {
+  WORKSPACE = "Create Workspace",
+  PROJECT = "Create Project",
+  TASK = "Create Task",
+  INVITE = "Invite User",
+}
