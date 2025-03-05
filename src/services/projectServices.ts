@@ -14,11 +14,8 @@ class ProjectServicesClass {
   async getProjectById(id: string): Promise<Project> {
     return new Promise(async (resolve) => {
       const projects = await this.getProjects();
-      console.log(id, "inf");
-      console.log(projects, "inf");
-      const project = projects.find((p) => p.projectId === id);
 
-      console.log(project);
+      const project = projects.find((p) => p.projectId === id) || null;
 
       resolve(project);
     });
@@ -26,8 +23,8 @@ class ProjectServicesClass {
 
   async addProject(project: Project): Promise<Project> {
     return new Promise(async (resolve) => {
-      const projects = await this.getProjects();
-      projects.push(project);
+      let projects = await this.getProjects();
+      projects = [project, ...projects];
       localStorage.setItem(LocalStorageKeys.PROJECTS, JSON.stringify(projects));
       resolve(project);
     });

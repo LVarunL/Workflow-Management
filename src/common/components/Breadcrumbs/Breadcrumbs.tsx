@@ -6,11 +6,13 @@ import FolderIcon from "@mui/icons-material/Folder";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { BreadcrumbContext, QueryKeys } from "../../utils/enums";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import WorkspaceServices from "../../../services/workspaceServices";
 import ProjectServices from "../../../services/projectServices";
-import { Icon, Link } from "@mui/material";
+import { Link } from "@mui/material";
+import { useWorkspace } from "../../../hooks/queries/WorkspaceQueries";
+import { useProject } from "../../../hooks/queries/ProjectQueries";
 interface MyBreadcrumbsProps {
   //   workspace?: string;
   //   project?: string;
@@ -26,19 +28,16 @@ export default function MyBreadcrumbs({
   const workspaceId = params.workspaceId;
   const projectId = params.projectId;
   console.log(projectId);
-  const { data: workspace } = useQuery({
-    queryKey: [QueryKeys.WORKSPACES, workspaceId],
-    queryFn: ({ queryKey }) => WorkspaceServices.getWorkspaceById(queryKey[1]),
-  });
-  const { data: project } = useQuery({
-    queryKey: [QueryKeys.PROJECTS, projectId],
-    queryFn: ({ queryKey }) => ProjectServices.getProjectById(queryKey[1]),
-    select: (data) => data.projectName,
-  });
-  console.log(workspace, project);
+  const { data: workspace } = useWorkspace(workspaceId);
+  const { data: project } = useProject(projectId);
+  const navigate = useNavigate();
   return (
     <Breadcrumbs sx={{ marginLeft: 2 }}>
       <Link
+        component="button"
+        onClick={() => {
+          navigate(`/${workspaceId}`);
+        }}
         underline="none"
         sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
         color={project || context ? "textSecondary" : "textPrimary"}
@@ -53,13 +52,18 @@ export default function MyBreadcrumbs({
       </Link>
 
       {project && (
-        <Typography
+        <Link
           sx={{ display: "flex", alignItems: "center" }}
           color="textPrimary"
+          component="button"
+          onClick={() => {
+            navigate(`/${workspaceId}/${projectId}`);
+          }}
+          underline="none"
         >
           <FolderIcon fontSize="inherit" />
-          {project}
-        </Typography>
+          {project?.projectName}
+        </Link>
       )}
 
       {context && (

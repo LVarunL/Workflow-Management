@@ -6,8 +6,8 @@ import Sidebar from "../Sidebar/Sidebar";
 import { Stack, Box } from "@mui/material";
 export default function ContentLayout() {
   return (
-    <Stack direction="row">
-      <Box sx={{ width: "12%" }}>
+    <Stack direction="row" marginTop={0} paddingTop={0}>
+      <Box sx={{ width: "12%" }} marginTop={0} paddingTop={0}>
         <Sidebar></Sidebar>
       </Box>
 

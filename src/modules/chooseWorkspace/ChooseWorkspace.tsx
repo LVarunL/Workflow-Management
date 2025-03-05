@@ -9,14 +9,11 @@ import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../common/utils/enums";
 import CreateProjectForm from "../../common/components/Forms/CreateProjectForm";
 import InviteUserForm from "../../common/components/Forms/InviteUserForm";
-
+import { useWorkspaces } from "../../hooks/queries/WorkspaceQueries";
 const ChooseWorkspace = () => {
   //   const workspaces: Workspace[] = WorkspaceServices.getWorkspaces();
 
-  const { isPending, data } = useQuery({
-    queryKey: [QueryKeys.WORKSPACES],
-    queryFn: WorkspaceServices.getWorkspaces,
-  });
+  const { isPending, data } = useWorkspaces();
   const workspacesDropdownOptions: Option[] = data?.map((workspace) => ({
     value: workspace.id,
     name: workspace.workspaceName,

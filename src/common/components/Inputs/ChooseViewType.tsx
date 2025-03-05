@@ -8,6 +8,7 @@ import TableViewIcon from "@mui/icons-material/TableView";
 import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { Typography } from "@mui/material";
+
 export function useViewTypeToggle() {
   const [viewType, setViewType] = useState<ViewType>(ViewType.TABLE);
 

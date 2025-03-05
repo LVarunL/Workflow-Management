@@ -8,6 +8,7 @@ import {
   Typography,
   Box,
   Button,
+  Link,
 } from "@mui/material";
 import {
   Person,
@@ -15,30 +16,24 @@ import {
   Folder,
   People,
   Assignment,
-  Add,
 } from "@mui/icons-material";
+import { useNavigate, useParams } from "react-router";
 import ModalForm from "../../../hooks/FormModal";
-import { FormTitles, QueryKeys } from "../../utils/enums";
+import { FormTitles } from "../../utils/enums";
 import CreateProjectForm from "../Forms/CreateProjectForm";
 import InviteUsersForm from "../Forms/InviteUserForm";
-import { useQuery } from "@tanstack/react-query";
-import WorkspaceServices from "../../../services/workspaceServices";
-import { useParams } from "react-router";
-
-const projects = [];
-for (let i = 1; i <= 10; i += 1) {
-  projects.push(`Project ${i}`);
-}
+import { useWorkspace } from "../../../hooks/queries/WorkspaceQueries";
+import { useWorkspaceProjects } from "../../../hooks/queries/ProjectQueries";
 
 export default function Sidebar() {
-  const [isProjectFormOpen, setIsProjectFormOpen] = useState<boolean>(false);
-  const [isInviteFormOpen, setIsInviteFormOpen] = useState<boolean>(false);
-  const params = useParams();
-  const workspaceId = params.workspaceId;
-  const { data: workspace } = useQuery({
-    queryKey: [QueryKeys.WORKSPACES, workspaceId],
-    queryFn: ({ queryKey }) => WorkspaceServices.getWorkspaceById(queryKey[1]),
-  });
+  const [isProjectFormOpen, setIsProjectFormOpen] = useState(false);
+  const [isInviteFormOpen, setIsInviteFormOpen] = useState(false);
+  const { workspaceId } = useParams();
+  const navigate = useNavigate();
+
+  const { data: workspace } = useWorkspace(workspaceId);
+  const { data: projects } = useWorkspaceProjects(workspaceId);
+
   return (
     <>
       <Box
@@ -50,133 +45,198 @@ export default function Sidebar() {
           backgroundColor: "#f5f5f2",
           minHeight: "100vh",
           minWidth: 100,
-          // gap: 1,
         }}
       >
-        <Typography
-          variant="h6"
+        <Link
+          component="button"
           sx={{
             fontWeight: "bold",
             fontSize: 24,
             marginBottom: 1,
             display: "flex",
             alignItems: "center",
+            color: "gray",
           }}
+          onClick={() => navigate(`/${workspaceId}`)}
+          underline="none"
         >
-          <img src={workspace?.workspaceImage} width={30} height={30}></img>
+          <img src={workspace?.workspaceImage} width={24} height={24} alt="" />
           {workspace?.workspaceName}
-        </Typography>
+        </Link>
 
         <Divider sx={{ marginBottom: 1 }} />
 
-        <List disablePadding>
-          <SidebarItem icon={<Person fontSize="small" />} text="Profile" />
-          <SidebarItem icon={<Settings fontSize="small" />} text="Settings" />
+        <List>
+          <SidebarItem
+            icon={<Person fontSize="small" />}
+            text="Profile"
+            onClick={() => {}}
+          />
+          <SidebarItem
+            icon={<Settings fontSize="small" />}
+            text="Settings"
+            onClick={() => {}}
+          />
         </List>
 
         <Divider sx={{ marginTop: 1 }} />
 
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: "bold", fontSize: 12, paddingTop: 2 }}
-        >
-          Projects
-        </Typography>
+        <SectionTitle title="Projects" />
 
-        <List sx={{ margin: 0, padding: 0 }}>
-          {projects.map((project, index) => (
+        <List>
+          {projects?.slice(0, 10).map((project) => (
             <SidebarItem
-              key={index}
+              key={project.projectId}
               icon={<Folder fontSize="small" />}
-              text={project}
+              text={project?.projectName}
+              onClick={() => navigate(`/${workspaceId}/${project.projectId}`)}
               nested
             />
           ))}
         </List>
 
-        <Button
-          sx={{
-            justifyContent: "flex-start",
-            color: "gray",
-            fontSize: 12,
-            paddingLeft: 1,
-            marginTop: 0,
-            marginBottom: 1,
-            "&:hover": { color: "black" },
-          }}
+        {projects?.length > 10 && (
+          <ViewMoreButton
+            onClick={() => navigate(`/${workspaceId}/projects`)}
+          />
+        )}
+
+        <ActionButton
+          text="+ Add Project"
           onClick={() => setIsProjectFormOpen(true)}
-        >
-          + Add Project
-        </Button>
+        />
 
         <Divider sx={{ marginBottom: 1 }} />
 
-        <SidebarItem icon={<Assignment fontSize="small" />} text="All Tasks" />
-        <SidebarItem icon={<Assignment fontSize="small" />} text="My Tasks" />
+        <List>
+          <SidebarItem
+            icon={<Assignment fontSize="small" />}
+            text="All Tasks"
+            onClick={() => navigate(`/${workspaceId}/alltasks`)}
+          />
+          <SidebarItem
+            icon={<Assignment fontSize="small" />}
+            text="My Tasks"
+            onClick={() => navigate(`/${workspaceId}/mytasks`)}
+          />
+        </List>
 
         <Divider sx={{ marginBottom: 1, marginTop: 1 }} />
 
-        <SidebarItem icon={<People fontSize="small" />} text="People" />
-        <Button
-          sx={{
-            justifyContent: "flex-start",
-            color: "gray",
-            fontSize: 12,
-            paddingLeft: 1,
-            "&:hover": { color: "black" },
-          }}
+        <SidebarItem
+          icon={<People fontSize="small" />}
+          text="People"
+          onClick={() => navigate(`/${workspaceId}/people`)}
+        />
+        <ActionButton
+          text="+ Invite People"
           onClick={() => setIsInviteFormOpen(true)}
-        >
-          + Invite People
-        </Button>
+        />
       </Box>
-      {isProjectFormOpen && (
-        <ModalForm
-          title={FormTitles.PROJECT}
-          isOpen={isProjectFormOpen}
+
+      <ModalFormWrapper
+        title={FormTitles.PROJECT}
+        isOpen={isProjectFormOpen}
+        onClose={() => setIsProjectFormOpen(false)}
+      >
+        <CreateProjectForm
+          currentUser="varun@ontic.co"
+          workspaceId={workspaceId}
           onClose={() => setIsProjectFormOpen(false)}
-        >
-          <CreateProjectForm
-            currentUser="varun@ontic.co"
-            workspaceId={workspaceId}
-            onClose={() => setIsProjectFormOpen(false)}
-          />
-        </ModalForm>
-      )}
-      {isInviteFormOpen && (
-        <ModalForm
-          title={FormTitles.INVITE}
-          isOpen={isInviteFormOpen}
+        />
+      </ModalFormWrapper>
+
+      <ModalFormWrapper
+        title={FormTitles.INVITE}
+        isOpen={isInviteFormOpen}
+        onClose={() => setIsInviteFormOpen(false)}
+      >
+        <InviteUsersForm
+          entityId={workspaceId}
+          type="workspace"
           onClose={() => setIsInviteFormOpen(false)}
-        >
-          <InviteUsersForm
-            entityId={workspaceId}
-            type="workspace"
-            onClose={() => setIsInviteFormOpen(false)}
-          ></InviteUsersForm>
-        </ModalForm>
-      )}
+        />
+      </ModalFormWrapper>
     </>
   );
 }
 
-function SidebarItem({ icon, text, nested = false }) {
+function SidebarItem({ icon, text, onClick, nested = false }) {
   return (
     <ListItem
       sx={{
-        height: 24,
-        paddingLeft: nested ? 1 : 1,
-        // padding: 1,
-        margin: 0.5,
+        height: 30,
+        paddingLeft: nested ? 2 : 1,
+        margin: "2px 0",
         borderRadius: 1,
-        "&:hover": { backgroundColor: "#dbdbd9" },
         color: "#80807d",
         cursor: "pointer",
-        // fontSize: 12,
+        fontSize: 14,
+        "&:hover": { backgroundColor: "#e0e0dc", color: "#333" },
       }}
+      onClick={onClick}
     >
-      <ListItemIcon sx={{ minWidth: 30 }}>{icon}</ListItemIcon>
-      {text}
+      <ListItemIcon sx={{ minWidth: 30, color: "inherit" }}>
+        {icon}
+      </ListItemIcon>
+      <ListItemText primary={text} sx={{ fontSize: 14 }} />
     </ListItem>
+  );
+}
+
+function SectionTitle({ title }) {
+  return (
+    <Typography
+      variant="body2"
+      sx={{ fontWeight: "bold", fontSize: 12, paddingTop: 2 }}
+    >
+      {title}
+    </Typography>
+  );
+}
+
+function ViewMoreButton({ onClick }) {
+  return (
+    <Typography
+      sx={{
+        color: "#0073e6",
+        fontSize: 12,
+        cursor: "pointer",
+        paddingLeft: 1,
+        "&:hover": { textDecoration: "underline" },
+      }}
+      onClick={onClick}
+    >
+      View More
+    </Typography>
+  );
+}
+
+function ActionButton({ text, onClick }) {
+  return (
+    <Button
+      sx={{
+        justifyContent: "flex-start",
+        color: "gray",
+        fontSize: 12,
+        paddingLeft: 1,
+        marginTop: 0,
+        marginBottom: 1,
+        "&:hover": { color: "black" },
+      }}
+      onClick={onClick}
+    >
+      {text}
+    </Button>
+  );
+}
+
+function ModalFormWrapper({ title, isOpen, onClose, children }) {
+  return (
+    isOpen && (
+      <ModalForm title={title} isOpen={isOpen} onClose={onClose}>
+        {children}
+      </ModalForm>
+    )
   );
 }

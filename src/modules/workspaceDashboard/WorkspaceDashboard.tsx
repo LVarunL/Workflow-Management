@@ -12,12 +12,6 @@ import { useQuery } from "@tanstack/react-query";
 export default function WorkspaceDashboard() {
   const params = useParams();
   const currentWorkspaceId = params.workspaceId;
-  //   const { data: currentWorkspace } = useQuery({
-  //     queryKey: [QueryKeys.WORKSPACES, currentWorkspaceId],
-  //     queryFn: ({ queryKey }) => {
-  //       return WorkspaceServices.getWorkspaceById(queryKey[1]);
-  //     },
-  //   });
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<FormTitles | null>(null);
   const openForm = function (title: FormTitles) {
