@@ -22,9 +22,8 @@ import ModalForm from "../../../hooks/FormModal";
 import { FormTitles } from "../../utils/enums";
 import CreateProjectForm from "../Forms/CreateProjectForm";
 import InviteUsersForm from "../Forms/InviteUserForm";
-import { useWorkspace } from "../../../hooks/queries/WorkspaceQueries";
-import { useWorkspaceProjects } from "../../../hooks/queries/ProjectQueries";
-
+import useWorkspace from "../../../hooks/queries/workspace/useWorkspace";
+import useWorkspaceProjects from "../../../hooks/queries/project/useWorkspaceProjects";
 export default function Sidebar() {
   const [isProjectFormOpen, setIsProjectFormOpen] = useState(false);
   const [isInviteFormOpen, setIsInviteFormOpen] = useState(false);
@@ -60,7 +59,15 @@ export default function Sidebar() {
           onClick={() => navigate(`/${workspaceId}`)}
           underline="none"
         >
-          <img src={workspace?.workspaceImage} width={24} height={24} alt="" />
+          {workspace?.workspaceImage && (
+            <img
+              src={workspace?.workspaceImage}
+              width={24}
+              height={24}
+              alt=""
+            />
+          )}
+
           {workspace?.workspaceName}
         </Link>
 

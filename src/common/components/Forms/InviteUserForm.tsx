@@ -8,7 +8,7 @@ import { useToast } from "../Snackbar/SnackbarContext";
 
 import { QueryKeys, ToastSeverity } from "../../utils/enums";
 import { User } from "../../../models/User";
-
+import useAddMember from "../../../hooks/queries/user/useAddMember";
 interface InviteUsersFormProps {
   entityId: string;
   type: "workspace" | "project";
@@ -29,16 +29,7 @@ const InviteUsersForm = ({ entityId, type, onClose }: InviteUsersFormProps) => {
     return emailRegex.test(email);
   }
 
-  const addUsersMutation = useMutation({
-    mutationFn: (emails: string[]) =>
-      type === "workspace"
-        ? WorkspaceServices.addUsersToWorkspace(entityId, emails)
-        : ProjectServices.addUsersToProject(entityId, emails),
-    onSuccess: () => {
-      showToast("Users invited successfully!", ToastSeverity.SUCCESS);
-      onClose();
-    },
-  });
+  const addUsersMutation = useAddMember(type, entityId, onClose);
 
   const handleAddEmail = () => {
     if (!validateEmail(email)) {

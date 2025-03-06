@@ -17,6 +17,7 @@ import ProjectServices from "../../../services/projectServices";
 import { useToast } from "../Snackbar/SnackbarContext";
 import { QueryKeys, ToastSeverity } from "../../utils/enums";
 import { Project } from "../../../models/Project";
+import useCreateProject from "../../../hooks/queries/project/useCreateProject";
 
 interface CreateProjectFormProps {
   onClose: () => void;
@@ -33,16 +34,7 @@ const CreateProjectForm = ({
   const navigate = useNavigate();
   const { showToast } = useToast();
   const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: (newProject: Project) => ProjectServices.addProject(newProject),
-    onSuccess: (project) => {
-      showToast("Project created successfully", ToastSeverity.SUCCESS);
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.PROJECTS] });
-      navigate(`/${workspaceId}/${project.projectId}`);
-    },
-  });
-
+  const mutation = useCreateProject(workspaceId);
   const handleCreate = () => {
     if (!projectName) {
       showToast("Project name is required", ToastSeverity.WARNING);
@@ -60,6 +52,7 @@ const CreateProjectForm = ({
     };
 
     mutation.mutate(newProject);
+    onClose();
   };
 
   return (

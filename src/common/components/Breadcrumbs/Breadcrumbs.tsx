@@ -11,8 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import WorkspaceServices from "../../../services/workspaceServices";
 import ProjectServices from "../../../services/projectServices";
 import { Link } from "@mui/material";
-import { useWorkspace } from "../../../hooks/queries/WorkspaceQueries";
-import { useProject } from "../../../hooks/queries/ProjectQueries";
+import useWorkspace from "../../../hooks/queries/workspace/useWorkspace";
+import useProject from "../../../hooks/queries/project/usProject";
 interface MyBreadcrumbsProps {
   //   workspace?: string;
   //   project?: string;

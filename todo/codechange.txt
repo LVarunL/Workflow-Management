@@ -1,1 +1,4 @@
 1. add currentuser to workspade userList when creating
+2. see why shouldn't use much sx, and remove the aggresive use of it from code
+3. Define css in much beter way please, this random inline thing looks pathetic
+4. when clicking somethong that leads to current page, code is pushing that to history as well(prevent navigation if it leads to the same current page)

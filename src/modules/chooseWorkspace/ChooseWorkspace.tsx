@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../../common/utils/enums";
 import CreateProjectForm from "../../common/components/Forms/CreateProjectForm";
 import InviteUserForm from "../../common/components/Forms/InviteUserForm";
-import { useWorkspaces } from "../../hooks/queries/WorkspaceQueries";
+import useWorkspaces from "../../hooks/queries/workspace/useWorkspaces";
 const ChooseWorkspace = () => {
   //   const workspaces: Workspace[] = WorkspaceServices.getWorkspaces();
 

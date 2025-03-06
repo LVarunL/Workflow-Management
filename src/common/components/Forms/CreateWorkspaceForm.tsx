@@ -10,23 +10,16 @@ import WorkspaceServices from "../../../services/workspaceServices";
 import { useToast } from "../Snackbar/SnackbarContext";
 import { QueryKeys, ToastSeverity } from "../../utils/enums";
 import Workspace from "../../../models/Workspace";
-
+import useCreateWorkspace from "../../../hooks/queries/workspace/useCreateWorkspace";
 const CreateWorkspaceForm = ({ onClose }) => {
   const [workspaceName, setWorkspaceName] = useState("");
   const [workspaceDescription, setWorkspaceDescription] = useState("");
+  const [uploadedImage, setUploadedImage] = useState<string>();
   const navigate = useNavigate();
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
-    mutationFn: (newWorkspace: Workspace) =>
-      WorkspaceServices.addWorkspace(newWorkspace),
-    onSuccess: (workspace) => {
-      showToast("Workspace created successfully", ToastSeverity.SUCCESS);
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.WORKSPACES] });
-      navigate(`/${workspace.id}`);
-    },
-  });
+  const mutation = useCreateWorkspace();
 
   const handleCreate = () => {
     if (!workspaceName) {
@@ -34,10 +27,11 @@ const CreateWorkspaceForm = ({ onClose }) => {
       return;
     }
 
-    const newWorkspace = {
+    const newWorkspace: Workspace = {
       id: uuid(),
       workspaceName,
       workspaceDescription,
+      workspaceImage: uploadedImage,
       userList: [], //add current user here
     };
 
@@ -56,7 +50,7 @@ const CreateWorkspaceForm = ({ onClose }) => {
         gap: 2,
       }}
     >
-      <MyInputs.UploadImage />
+      <MyInputs.UploadImage setUploadedImage={setUploadedImage} />
 
       <TextField
         placeholder="Workspace Name"
@@ -88,10 +82,6 @@ const CreateWorkspaceForm = ({ onClose }) => {
         value={workspaceDescription}
         onChange={(e) => setWorkspaceDescription(e.target.value)}
       />
-
-      <Button variant="outlined" fullWidth>
-        + Invite People
-      </Button>
 
       <Stack direction="row" justifyContent="space-between">
         <MyButtons.CloseModalButton text="Cancel" onClick={onClose} />
