@@ -11,6 +11,7 @@ import { useToast } from "../Snackbar/SnackbarContext";
 import { QueryKeys, ToastSeverity } from "../../utils/enums";
 import Workspace from "../../../models/Workspace";
 import useCreateWorkspace from "../../../hooks/queries/workspace/useCreateWorkspace";
+import { getUserFromToken } from "../../utils/authUtil";
 const CreateWorkspaceForm = ({ onClose }) => {
   const [workspaceName, setWorkspaceName] = useState("");
   const [workspaceDescription, setWorkspaceDescription] = useState("");
@@ -27,12 +28,13 @@ const CreateWorkspaceForm = ({ onClose }) => {
       return;
     }
 
+    const currentUser = getUserFromToken();
     const newWorkspace: Workspace = {
       id: uuid(),
       workspaceName,
       workspaceDescription,
       workspaceImage: uploadedImage,
-      userList: [], //add current user here
+      userList: [currentUser], //add current user here
     };
 
     mutation.mutate(newWorkspace);

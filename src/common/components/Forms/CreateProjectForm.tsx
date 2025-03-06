@@ -18,6 +18,7 @@ import { useToast } from "../Snackbar/SnackbarContext";
 import { QueryKeys, ToastSeverity } from "../../utils/enums";
 import { Project } from "../../../models/Project";
 import useCreateProject from "../../../hooks/queries/project/useCreateProject";
+import { getUserFromToken } from "../../utils/authUtil";
 
 interface CreateProjectFormProps {
   onClose: () => void;
@@ -27,7 +28,6 @@ interface CreateProjectFormProps {
 const CreateProjectForm = ({
   onClose,
   workspaceId,
-  currentUser,
 }: CreateProjectFormProps) => {
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
@@ -35,6 +35,7 @@ const CreateProjectForm = ({
   const { showToast } = useToast();
   const queryClient = useQueryClient();
   const mutation = useCreateProject(workspaceId);
+  const currentUser = getUserFromToken();
   const handleCreate = () => {
     if (!projectName) {
       showToast("Project name is required", ToastSeverity.WARNING);
@@ -98,7 +99,7 @@ const CreateProjectForm = ({
       />
 
       <Typography> Created By</Typography>
-      <Chip label={"lemon.white@ontic.co"} />
+      <Chip label={currentUser} />
       <Stack direction="row" justifyContent="space-between">
         <MyButtons.CloseModalButton text="Cancel" onClick={onClose} />
         <MyButtons.SubmitButton

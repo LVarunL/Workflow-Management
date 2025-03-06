@@ -5,6 +5,7 @@ const SECRET_KEY = "WHATCANITBEOTHER";
 interface User {
   email: string;
   password: string;
+  authToken?: string;
 }
 
 class UserModelUtilClass {
@@ -44,6 +45,17 @@ class UserModelUtilClass {
   generateToken = function (email: string): string {
     const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1h" });
     return token;
+  };
+
+  updateToken = function (token: string, userToUpdate: User) {
+    let users = this.getUsers();
+    users = users.map((user: User) => {
+      if (user.email === userToUpdate.email) {
+        return { ...user, authToken: token };
+      }
+      return user;
+    });
+    this.saveUsers(users);
   };
 }
 // const UserModelUtil = (function () {

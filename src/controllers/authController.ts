@@ -21,6 +21,7 @@ class AuthControllerClass {
         responseMessage: "Wrong Password!",
       };
     }
+    UserModelUtil.updateToken(token, user);
     return {
       responseCode: 200,
       responseMessage: "Sign In Successful",
@@ -44,6 +45,17 @@ class AuthControllerClass {
       responseCode: 200,
       responseMessage: "User registered successfully",
     };
+  }
+
+  getUserFromToken(token: string): string | null {
+    let users = UserModelUtil.getUsers();
+    let userFound = null;
+    users.forEach((user: User) => {
+      if (user.authToken === token) {
+        userFound = user.email;
+      }
+    });
+    return userFound;
   }
 }
 const AuthController = new AuthControllerClass();
