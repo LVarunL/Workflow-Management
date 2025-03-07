@@ -35,12 +35,14 @@ export enum LocalStorageKeys {
   WORKSPACES = "workspaces",
   AUTH = "auth",
   PROJECTS = "projects",
+  TASKS = "tasks",
 }
 
 export enum QueryKeys {
   WORKSPACES = "workspace",
   PROJECTS = "project",
   USERS = "user",
+  TASKS = "task",
 }
 
 export enum FormTitles {

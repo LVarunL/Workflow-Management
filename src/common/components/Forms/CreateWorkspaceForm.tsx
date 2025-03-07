@@ -29,7 +29,7 @@ const CreateWorkspaceForm = ({ onClose }) => {
     }
 
     const currentUser = getUserFromToken();
-    const newWorkspace: Workspace = {
+    const newWorkspace: any = {
       id: uuid(),
       workspaceName,
       workspaceDescription,

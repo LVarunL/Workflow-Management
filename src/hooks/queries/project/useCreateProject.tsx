@@ -11,7 +11,8 @@ const useCreateProject = (workspaceId: string) => {
   const { showToast } = useToast();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (newProject: Project) => ProjectServices.addProject(newProject),
+    mutationFn: (newProject: Project) =>
+      ProjectServices.upsertProject(newProject),
     onSuccess: (project) => {
       showToast("Project created successfully", ToastSeverity.SUCCESS);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.PROJECTS] });

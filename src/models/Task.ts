@@ -1,8 +1,8 @@
 import { TaskStatus, TaskPriority } from "../common/utils/enums";
-interface Task {
-  taskId: string;
-  taskName: string;
-  taskDescription: string;
+export interface Task {
+  id: string;
+  name: string;
+  description: string;
   assignedTo: string;
   createdBy: string;
   creationTime: string;
@@ -10,4 +10,6 @@ interface Task {
   priority: TaskPriority;
   lastModifiedTime: Date;
   deadline: Date;
+  projectId: string;
+  workspaceId: string;
 }

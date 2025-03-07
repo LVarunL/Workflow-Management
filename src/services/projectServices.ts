@@ -21,10 +21,19 @@ class ProjectServicesClass {
     });
   }
 
-  async addProject(project: Project): Promise<Project> {
+  async upsertProject(project: Project): Promise<Project> {
     return new Promise(async (resolve) => {
       let projects = await this.getProjects();
-      projects = [project, ...projects];
+      const existingIndex = projects.findIndex(
+        (p) => p.projectId === project.projectId
+      );
+
+      if (existingIndex !== -1) {
+        projects[existingIndex] = project;
+      } else {
+        projects = [project, ...projects];
+      }
+
       localStorage.setItem(LocalStorageKeys.PROJECTS, JSON.stringify(projects));
       resolve(project);
     });
