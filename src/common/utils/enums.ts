@@ -51,3 +51,9 @@ export enum FormTitles {
   TASK = "Create Task",
   INVITE = "Invite User",
 }
+
+export enum TableTypes {
+  TASK = "TASK",
+  PROJECT = "PROJECT",
+  PEOPLE = "PEOPLE",
+}

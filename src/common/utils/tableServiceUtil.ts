@@ -1,3 +1,7 @@
+import TaskTableConfigs from "../components/Table/TableConfigs/TaskTableConfigs";
+import { TableTypes } from "./enums";
+import { TableConfigs } from "./tableComponentUtil";
+
 interface SortDataParams<T> {
   data: T[];
   sortKey: string;
@@ -30,4 +34,11 @@ export function filterData<T>({
   filterValue,
 }: FilterDataParams<T>): T[] {
   return [...data].filter((a) => a[filterKey] === filterValue);
+}
+
+export function getConfig(type: TableTypes): TableConfigs {
+  if (type === TableTypes.PROJECT) {
+    return TaskTableConfigs;
+  }
+  return TaskTableConfigs;
 }

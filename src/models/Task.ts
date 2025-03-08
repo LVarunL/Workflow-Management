@@ -8,6 +8,7 @@ export interface Task {
   creationTime: string;
   status: TaskStatus;
   priority: TaskPriority;
+  lastModifiedBy: string;
   lastModifiedTime: Date;
   deadline: Date;
   projectId: string;

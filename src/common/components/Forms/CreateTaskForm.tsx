@@ -63,6 +63,7 @@ const CreateTaskForm = ({
       status,
       priority,
       lastModifiedTime: new Date(),
+      lastModifiedBy: currentUser,
       deadline: deadline ? new Date(deadline) : new Date(),
     };
 
