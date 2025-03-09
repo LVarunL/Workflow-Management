@@ -9,6 +9,10 @@ import { useToast } from "../Snackbar/SnackbarContext";
 import { QueryKeys, ToastSeverity } from "../../utils/enums";
 import { User } from "../../../models/User";
 import useAddMember from "../../../hooks/queries/user/useAddMember";
+import useWorkspace from "../../../hooks/queries/workspace/useWorkspace";
+import { useUsers } from "../../../hooks/queries/user/useUsers";
+import useWorkspacePeople from "../../../hooks/queries/workspace/useWorkspacePeople";
+import { useParams } from "react-router";
 interface InviteUsersFormProps {
   entityId: string;
   type: "workspace" | "project";
@@ -19,10 +23,11 @@ const InviteUsersForm = ({ entityId, type, onClose }: InviteUsersFormProps) => {
   const [emails, setEmails] = useState([]);
   const { showToast } = useToast();
 
-  const { data: registeredUsers = [] } = useQuery({
-    queryKey: [QueryKeys.USERS],
-    queryFn: UserServices.getUsers,
-  });
+  const params = useParams();
+  const workspaceId = params.workspaceId;
+  const { data: registeredUsers = [] } = useUsers();
+
+  const { data: workspaceUsers = [] } = useWorkspacePeople(workspaceId);
   function validateEmail(email: string): boolean {
     //how what why kya kaise kyu shu kem kemnu
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -46,7 +51,13 @@ const InviteUsersForm = ({ entityId, type, onClose }: InviteUsersFormProps) => {
       showToast("Email already added!", ToastSeverity.INFO);
       return;
     }
-
+    if (type === "project" && !workspaceUsers.some((user) => user === email)) {
+      showToast(
+        "User must be part of the workspace first!",
+        ToastSeverity.WARNING
+      );
+      return;
+    }
     setEmails([...emails, email]);
     setEmail("");
   };

@@ -3,5 +3,5 @@ export default interface Workspace {
   workspaceName: string;
   workspaceDescription: string;
   workspaceImage?: string;
-  userList: String[];
+  userList: string[];
 }

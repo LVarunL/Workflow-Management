@@ -9,7 +9,7 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
-
+// import { TableVirtuoso, TableComponents } from "react-virtuoso";
 interface RootTableProps<T> {
   data: T[];
   tableConfig: TableConfigs;

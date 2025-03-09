@@ -5,9 +5,12 @@ import { Button } from "@mui/material";
 import ModalForm from "../../hooks/FormModal";
 import CreateTaskForm from "../../common/components/Forms/CreateTaskForm";
 import { FormTitles, TableTypes } from "../../common/utils/enums";
-import useTasks from "../../hooks/queries/task/useTasks";
+import useTasks, { UseTasksParams } from "../../hooks/queries/task/useTasks";
 import { sortInfo, filterInfo } from "../../services/taskServices";
 import { Task } from "../../models/Task";
+import { FieldsAccessKeys } from "../../common/utils/tableComponentUtil";
+import { getUserFromToken } from "../../common/utils/authUtil";
+import ProjectHeader from "./ProjectPageHeader";
 export default function ProjectPage() {
   const params = useParams();
   const workspaceId = params.workspaceId;
@@ -15,22 +18,33 @@ export default function ProjectPage() {
   console.log(params);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<FormTitles | null>(null);
-  const [sortInfo, setSortInfo] = useState<sortInfo>({
-    isSort: false,
-    sortKey: null,
-    sortOrder: null,
-  });
-  const [filterInfo, setFilterInfo] = useState<filterInfo>({
-    isFilter: true,
-    filterKey: "projectId",
-    filterValue: projectId,
-  });
+  const [sortInfo, setSortInfo] = useState<sortInfo>(null);
+  const [filterInfo, setFilterInfo] = useState<filterInfo[]>(null);
+  const resetFilterForPage = () => {
+    if (projectId === "alltasks") {
+      setFilterInfo([{ filterKey: "workspaceId", filterValue: workspaceId }]);
+    } else if (projectId === "mytasks") {
+      setFilterInfo([
+        {
+          filterKey: "assignedTo",
+          filterValue: getUserFromToken(),
+        },
+        {
+          filterKey: "workspaceId",
+          filterValue: workspaceId,
+        },
+      ]);
+    } else {
+      setFilterInfo([
+        {
+          filterKey: "projectId",
+          filterValue: projectId,
+        },
+      ]);
+    }
+  };
   useEffect(() => {
-    setFilterInfo({
-      isFilter: true,
-      filterKey: "projectId",
-      filterValue: projectId,
-    });
+    resetFilterForPage();
   }, [projectId]);
   const openForm = (title: FormTitles) => {
     setIsOpen(true);
@@ -55,17 +69,28 @@ export default function ProjectPage() {
     }
   };
 
-  const { data: tasks, isPending } = useTasks({ sortInfo, filterInfo });
+  const getTaskQueryParams = (): UseTasksParams => {
+    let params = {};
+    if (sortInfo) {
+      params = { sortInfo: sortInfo };
+    }
+    if (filterInfo) {
+      params = { ...params, filterInfo: filterInfo };
+    }
+    return params;
+  };
+  const { data: tasks, isPending } = useTasks(getTaskQueryParams());
   console.log(tasks);
   return (
     <>
-      {params.projectId === "alltasks" && <div>AllTasks</div>}
+      {/* {params.projectId === "alltasks" && <div>AllTasks</div>}
       {params.projectId === "mytasks" && <div>Mytasks</div>}
       {params.projectId === "people" && <div>People</div>}
       {params.projectId !== "alltasks" &&
         params.projectId !== "mytasks" &&
-        params.projectId !== "people" && <div>{params.projectId}</div>}
+        params.projectId !== "people" && <div>{params.projectId}</div>} */}
 
+      <ProjectHeader />
       <Button variant="contained" onClick={() => openForm(FormTitles.TASK)}>
         Add Task
       </Button>

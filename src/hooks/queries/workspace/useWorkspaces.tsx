@@ -3,10 +3,12 @@ import React from "react";
 import { QueryKeys } from "../../../common/utils/enums";
 import WorkspaceServices from "../../../services/workspaceServices";
 
-const useWorkspaces = () => {
+const useWorkspaces = (userId) => {
   return useQuery({
     queryKey: [QueryKeys.WORKSPACES],
-    queryFn: WorkspaceServices.getWorkspaces,
+    queryFn: () => {
+      return WorkspaceServices.getWorkspacesForUser(userId);
+    },
   });
 };
 

@@ -10,10 +10,11 @@ import { QueryKeys } from "../../common/utils/enums";
 import CreateProjectForm from "../../common/components/Forms/CreateProjectForm";
 import InviteUserForm from "../../common/components/Forms/InviteUserForm";
 import useWorkspaces from "../../hooks/queries/workspace/useWorkspaces";
+import { getUserFromToken } from "../../common/utils/authUtil";
 const ChooseWorkspace = () => {
   //   const workspaces: Workspace[] = WorkspaceServices.getWorkspaces();
 
-  const { isPending, data } = useWorkspaces();
+  const { isPending, data } = useWorkspaces(getUserFromToken());
   const workspacesDropdownOptions: Option[] = data?.map((workspace) => ({
     value: workspace.id,
     name: workspace.workspaceName,

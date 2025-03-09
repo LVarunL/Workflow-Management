@@ -18,6 +18,8 @@ import ProjectPage from "./modules/projectPage/ProjectPage";
 
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
+
+import People from "./modules/People";
 export default function App() {
   const PrivateRoutes = () => {
     return getAuth() ? <Outlet /> : <Navigate to="/login" />;
@@ -39,6 +41,14 @@ export default function App() {
                   <Route
                     path="/:workspaceId/:projectId"
                     element={<ProjectPage />}
+                  ></Route>
+                  <Route
+                    path="/:workspaceId/people"
+                    element={<People />}
+                  ></Route>
+                  <Route
+                    path="/:workspaceId/:projectId/people"
+                    element={<People />}
                   ></Route>
                 </Route>
               </Route>

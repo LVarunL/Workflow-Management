@@ -10,6 +10,16 @@ class WorkspaceServicesClass {
     });
   }
 
+  async getWorkspacesForUser(userId: string): Promise<Workspace[]> {
+    return new Promise(async (resolve) => {
+      const workspaces = await this.getWorkspaces();
+      const userWorkspaces = workspaces.filter((workspace) =>
+        workspace.userList.includes(userId)
+      );
+      resolve(userWorkspaces);
+    });
+  }
+
   async getWorkspaceById(id: string): Promise<Workspace> {
     return new Promise(async (resolve) => {
       const workspaces = await this.getWorkspaces();
@@ -48,6 +58,12 @@ class WorkspaceServicesClass {
         JSON.stringify(workspaces)
       );
       resolve(workspace);
+    });
+  }
+  async getAllUsersInWorkspace(workspaceId: string): Promise<string[]> {
+    return new Promise(async (resolve) => {
+      const workspace = await this.getWorkspaceById(workspaceId);
+      resolve(workspace?.userList || []);
     });
   }
 }

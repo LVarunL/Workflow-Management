@@ -66,6 +66,12 @@ class ProjectServicesClass {
       resolve(project);
     });
   }
+  async getAllUsersInProject(projectId: string): Promise<string[]> {
+    return new Promise(async (resolve) => {
+      const project = await this.getProjectById(projectId);
+      resolve(project?.userList || []);
+    });
+  }
 }
 
 const ProjectServices = new ProjectServicesClass();

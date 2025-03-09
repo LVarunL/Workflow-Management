@@ -9,8 +9,8 @@ import InviteUsersForm from "../../common/components/Forms/InviteUserForm";
 import WorkspaceServices from "../../services/workspaceServices";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-
-const CURRENT_USER_NAME = "varun@ontic.co";
+import { getUserFromToken } from "../../common/utils/authUtil";
+import WorkspaceHeader from "./WorkspaceDashboardHeader";
 
 export default function WorkspaceDashboard() {
   const params = useParams();
@@ -32,7 +32,7 @@ export default function WorkspaceDashboard() {
         <CreateProjectForm
           onClose={closeForm}
           workspaceId={currentWorkspaceId}
-          currentUser={CURRENT_USER_NAME} //use current User
+          currentUser={getUserFromToken()}
         />
       );
     } else if (modalTitle === FormTitles.INVITE) {
@@ -48,6 +48,7 @@ export default function WorkspaceDashboard() {
   };
   return (
     <>
+      <WorkspaceHeader />
       <Box
         sx={{
           display: "flex",
