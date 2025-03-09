@@ -11,6 +11,9 @@ import { Task } from "../../models/Task";
 import { FieldsAccessKeys } from "../../common/utils/tableComponentUtil";
 import { getUserFromToken } from "../../common/utils/authUtil";
 import ProjectHeader from "./ProjectPageHeader";
+import { useUsers } from "../../hooks/queries/user/useUsers";
+import useProjectPeople from "../../hooks/queries/project/useProjectPeople";
+import Tablebar from "../../common/components/Table/Tablebar";
 export default function ProjectPage() {
   const params = useParams();
   const workspaceId = params.workspaceId;
@@ -20,6 +23,7 @@ export default function ProjectPage() {
   const [modalTitle, setModalTitle] = useState<FormTitles | null>(null);
   const [sortInfo, setSortInfo] = useState<sortInfo>(null);
   const [filterInfo, setFilterInfo] = useState<filterInfo[]>(null);
+  const [searchQuery, setSearchQuery] = useState<string>(null);
   const resetFilterForPage = () => {
     if (projectId === "alltasks") {
       setFilterInfo([{ filterKey: "workspaceId", filterValue: workspaceId }]);
@@ -46,16 +50,16 @@ export default function ProjectPage() {
   useEffect(() => {
     resetFilterForPage();
   }, [projectId]);
-  const openForm = (title: FormTitles) => {
-    setIsOpen(true);
-    setModalTitle(title);
-  };
+  // const openForm = (title: FormTitles) => {
+  //   setIsOpen(true);
+  //   setModalTitle(title);
+  // };
 
   const closeForm = () => {
     setIsOpen(false);
     setModalTitle(null);
   };
-
+  const { data: projectPeople } = useProjectPeople(projectId);
   const getFormToOpen = () => {
     if (modalTitle === FormTitles.TASK) {
       return (
@@ -63,7 +67,7 @@ export default function ProjectPage() {
           onClose={closeForm}
           projectId={projectId}
           workspaceId={workspaceId}
-          users={["lemon6@lemon.com", "locallocater3@gmail.com"]}
+          users={projectPeople}
         />
       );
     }
@@ -76,6 +80,9 @@ export default function ProjectPage() {
     }
     if (filterInfo) {
       params = { ...params, filterInfo: filterInfo };
+    }
+    if (searchQuery) {
+      params = { ...params, searchQuery: searchQuery };
     }
     return params;
   };
@@ -91,10 +98,14 @@ export default function ProjectPage() {
         params.projectId !== "people" && <div>{params.projectId}</div>} */}
 
       <ProjectHeader />
-      <Button variant="contained" onClick={() => openForm(FormTitles.TASK)}>
+      {/* <Button variant="contained" onClick={() => openForm(FormTitles.TASK)}>
         Add Task
-      </Button>
-
+      </Button> */}
+      <Tablebar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setFilterQuery={setFilterInfo}
+      ></Tablebar>
       <MyTable<Task> data={tasks} type={TableTypes.TASK} />
 
       {isOpen && (

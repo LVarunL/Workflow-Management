@@ -34,6 +34,7 @@ export function useViewTypeToggle() {
         </ToggleButton>
         <ToggleButton
           value={ViewType.KANBAN}
+          disabled
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -46,6 +47,7 @@ export function useViewTypeToggle() {
         </ToggleButton>
         <ToggleButton
           value={ViewType.CALENDAR}
+          disabled
           sx={{
             display: "flex",
             flexDirection: "column",

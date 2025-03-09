@@ -21,7 +21,7 @@ export function Searchbar({
     onSearch(searchQuery);
   };
 
-  const searchBar = (
+  return (
     <Box sx={{ position: "relative", width: width }}>
       <TextField
         fullWidth
@@ -46,6 +46,4 @@ export function Searchbar({
       </IconButton>
     </Box>
   );
-
-  return { searchBar, searchQuery };
 }

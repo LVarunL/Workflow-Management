@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TableTypes } from "../../utils/enums";
 import RootTable from "./Table";
 import { getConfig } from "../../utils/tableServiceUtil";
@@ -11,5 +11,10 @@ interface MyTableProps<T> {
 
 export default function MyTable<T>({ type, data }: MyTableProps<T>) {
   const tableConfig: TableConfigs = getConfig(type);
-  return <RootTable<T> data={data} tableConfig={tableConfig}></RootTable>;
+
+  return (
+    <>
+      <RootTable<T> data={data} tableConfig={tableConfig} />
+    </>
+  );
 }

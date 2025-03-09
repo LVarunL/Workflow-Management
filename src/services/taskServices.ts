@@ -1,6 +1,10 @@
 import { Task } from "../models/Task";
 import { LocalStorageKeys } from "../common/utils/enums";
-import { filterData, sortData } from "../common/utils/tableServiceUtil";
+import {
+  filterData,
+  searchData,
+  sortData,
+} from "../common/utils/tableServiceUtil";
 
 export type sortInfo = {
   sortOrder: "asc" | "des";
@@ -14,10 +18,15 @@ export type filterInfo = {
 export interface FindTaskProps {
   sortInfo?: sortInfo;
   filterInfo?: filterInfo[];
+  searchQuery?: string;
 }
 
 class TaskServicesClass {
-  async getTasks({ sortInfo, filterInfo }: FindTaskProps): Promise<Task[]> {
+  async getTasks({
+    sortInfo,
+    filterInfo,
+    searchQuery,
+  }: FindTaskProps): Promise<Task[]> {
     console.log(sortInfo, filterInfo);
     let tasks: Task[] =
       JSON.parse(localStorage.getItem(LocalStorageKeys.TASKS)) || [];
@@ -39,6 +48,8 @@ class TaskServicesClass {
           sortOrder: sortInfo.sortOrder,
         })
       : tasks;
+
+    tasks = searchQuery ? searchData({ data: tasks, searchQuery }) : tasks;
 
     return tasks;
   }
