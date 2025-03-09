@@ -88,8 +88,12 @@ export default function Sidebar() {
 
         <Divider sx={{ marginTop: 1 }} />
 
-        <SectionTitle title="Projects" />
-
+        <div
+          onClick={() => navigate(`/${workspaceId}/projects`)}
+          style={{ cursor: "pointer" }}
+        >
+          <SectionTitle title="Projects" />
+        </div>
         <List>
           {projects?.slice(0, 10).map((project) => (
             <SidebarItem

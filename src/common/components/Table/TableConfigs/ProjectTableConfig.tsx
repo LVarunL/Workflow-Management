@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router";
 import { Project } from "../../../../models/Project";
 import {
   Field,
@@ -6,8 +7,11 @@ import {
   TableConfigs,
   Columns,
 } from "../../../utils/tableComponentUtil";
-import { Tooltip, Chip } from "@mui/material";
+import { Tooltip, Chip, Link } from "@mui/material";
 
+const params = location.pathname;
+
+const workspaceId = params.split("/")[1];
 const ProjectTableColumns: Columns = [
   FieldsAccessKeys.ID,
   FieldsAccessKeys.NAME,
@@ -23,7 +27,7 @@ const ID: Field = {
   width: 150,
   renderCell: (data: Project) => (
     <Tooltip title={data.projectId} arrow>
-      <div
+      <Link
         style={{
           width: ID.width,
           whiteSpace: "nowrap",
@@ -31,9 +35,11 @@ const ID: Field = {
           textOverflow: "ellipsis",
           cursor: "pointer",
         }}
+        // onClick={() => navigate(`/${workspaceId}/${data.projectId}`)}
+        href={`/${workspaceId}/${data.projectId}`}
       >
         {data.projectId}
-      </div>
+      </Link>
     </Tooltip>
   ),
   canSort: true,
