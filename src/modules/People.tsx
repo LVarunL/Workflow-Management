@@ -25,7 +25,7 @@ export default function People() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       ></Tablebar>
-      <MyTable<string>
+      <MyTable<{ id: string }>
         data={people}
         type={TableTypes.PEOPLE}
         columns={columns}

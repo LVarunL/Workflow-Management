@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Stack,
@@ -24,38 +24,42 @@ interface CreateProjectFormProps {
   onClose: () => void;
   workspaceId: string;
   currentUser: string;
+  projectToEdit?: Project | null;
 }
+
 const CreateProjectForm = ({
   onClose,
   workspaceId,
+  projectToEdit,
 }: CreateProjectFormProps) => {
-  const [projectName, setProjectName] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-  const navigate = useNavigate();
+  const [projectName, setProjectName] = useState(projectToEdit?.name || "");
+  const [projectDescription, setProjectDescription] = useState(
+    projectToEdit?.description || ""
+  );
   const { showToast } = useToast();
-  const queryClient = useQueryClient();
   const mutation = useCreateProject(workspaceId);
+  const queryClient = useQueryClient();
   const currentUser = getUserFromToken();
-  const handleCreate = () => {
+
+  const handleCreate = async () => {
     if (!projectName) {
       showToast("Project name is required", ToastSeverity.WARNING);
       return;
     }
 
-    const newProject: Project = {
-      id: uuid(),
+    const projectData: Project = {
+      id: projectToEdit?.id || uuid(),
       workspaceId,
       name: projectName,
       description: projectDescription,
-      creationTime: new Date(),
-      createdBy: currentUser,
-      userList: [currentUser],
+      creationTime: projectToEdit?.creationTime || new Date(),
+      createdBy: projectToEdit?.createdBy || currentUser,
+      userList: projectToEdit?.userList || [currentUser],
     };
 
-    mutation.mutate(newProject);
+    await ProjectServices.upsertProject(projectData);
     onClose();
   };
-
   return (
     <Paper
       elevation={0}
@@ -98,12 +102,12 @@ const CreateProjectForm = ({
         onChange={(e) => setProjectDescription(e.target.value)}
       />
 
-      <Typography> Created By</Typography>
-      <Chip label={currentUser} />
+      {/* <Typography> Created By</Typography> */}
+      {/* <Chip label={currentUser} /> */}
       <Stack direction="row" justifyContent="space-between">
         <MyButtons.CloseModalButton text="Cancel" onClick={onClose} />
         <MyButtons.SubmitButton
-          text="Create Project"
+          text={projectToEdit ? "Update Project" : "Create Project"}
           onClick={handleCreate}
           disabled={mutation.isPending}
         />

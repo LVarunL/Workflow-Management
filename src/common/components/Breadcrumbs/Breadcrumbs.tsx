@@ -51,7 +51,7 @@ export default function MyBreadcrumbs({
         {workspace?.name}
       </Link>
 
-      {project && (
+      {projectId && (
         <Link
           sx={{ display: "flex", alignItems: "center" }}
           color="textPrimary"

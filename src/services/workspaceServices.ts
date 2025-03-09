@@ -61,11 +61,17 @@ class WorkspaceServicesClass {
       resolve(workspace);
     });
   }
-  async getAllUsersInWorkspace(workspaceId: string): Promise<string[]> {
-    return new Promise(async (resolve) => {
-      const workspace = await this.getWorkspaceById(workspaceId);
-      resolve(workspace?.userList || []);
-    });
+  async getAllUsersInWorkspace(workspaceId: string): Promise<{ id: string }[]> {
+    // return new Promise(async (resolve) => {
+    const workspace = await this.getWorkspaceById(workspaceId);
+    const users =
+      workspace?.userList.map((user) => {
+        return {
+          id: user,
+        };
+      }) || [];
+    return users;
+    // });
   }
 }
 

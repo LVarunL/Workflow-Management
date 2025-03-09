@@ -12,15 +12,15 @@ const PeopleTableColumns: Columns = [FieldsAccessKeys.EMAIL];
 const Email: Field = {
   label: "Email",
   width: 20,
-  renderCell: (data: string) => (
+  renderCell: (data: { id: string }) => (
     <div className="flex items-center gap-2">
       <div
         className="w-8 h-8 rounded-full flex items-center justify-center font-medium text-sm text-white"
-        style={{ backgroundColor: getRandomColor(data) }}
+        style={{ backgroundColor: getRandomColor(data.id) }}
       >
-        {data.charAt(0).toUpperCase()}
+        {data.id.charAt(0).toUpperCase()}
       </div>
-      <div>{data}</div>
+      <div>{data.id}</div>
     </div>
   ),
   canSort: true,

@@ -10,13 +10,17 @@ interface MyTableProps<T> {
   data: T[];
   columns?: Columns;
   tableHeight?: number;
+  onEdit?: (entityToEdit: T) => void;
+  onDelete?: (id: string) => void | Promise<void>;
 }
 
-export default function MyTable<T>({
+export default function MyTable<T extends { id: string }>({
   type,
   data,
   columns,
   tableHeight,
+  onEdit,
+  onDelete,
 }: MyTableProps<T>) {
   const tableConfig: TableConfigs = getConfig(type);
 
@@ -27,6 +31,8 @@ export default function MyTable<T>({
         tableConfig={tableConfig}
         customColumns={columns}
         tableHeight={tableHeight}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </>
   );

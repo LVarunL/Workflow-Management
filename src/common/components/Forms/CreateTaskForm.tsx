@@ -21,7 +21,7 @@ interface CreateTaskFormProps {
   onClose: () => void;
   projectId: string;
   workspaceId: string;
-  users: string[];
+  users: { id: string }[];
 }
 
 const CreateTaskForm = ({
@@ -109,8 +109,8 @@ const CreateTaskForm = ({
         fullWidth
       >
         {users.map((user) => (
-          <MenuItem key={user} value={user}>
-            {user}
+          <MenuItem key={user.id} value={user.id}>
+            {user.id}
           </MenuItem>
         ))}
       </TextField>

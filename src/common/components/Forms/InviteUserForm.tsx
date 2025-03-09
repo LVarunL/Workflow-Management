@@ -51,7 +51,10 @@ const InviteUsersForm = ({ entityId, type, onClose }: InviteUsersFormProps) => {
       showToast("Email already added!", ToastSeverity.INFO);
       return;
     }
-    if (type === "project" && !workspaceUsers.some((user) => user === email)) {
+    if (
+      type === "project" &&
+      !workspaceUsers.some((user) => user.id === email)
+    ) {
       showToast(
         "User must be part of the workspace first!",
         ToastSeverity.WARNING

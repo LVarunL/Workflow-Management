@@ -18,19 +18,23 @@ import useWorkspacePeople from "../../hooks/queries/workspace/useWorkspacePeople
 import MyTable from "../../common/components/Table/MyTable";
 import { Project } from "../../models/Project";
 import { Task } from "../../models/Task";
+import ProjectServices from "../../services/projectServices";
 
 export default function WorkspaceDashboard() {
   const params = useParams();
   const workspaceId = params.workspaceId;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<FormTitles | null>(null);
-  const openForm = function (title: FormTitles) {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const openForm = function (title: FormTitles, data: Project | null = null) {
     setIsOpen(true);
     setModalTitle(title);
+    setSelectedProject(data);
   };
   const closeForm = function () {
     setIsOpen(false);
     setModalTitle(null);
+    setSelectedProject(null);
   };
   const getFormToOpen = function () {
     console.log("getting form to open");
@@ -40,6 +44,7 @@ export default function WorkspaceDashboard() {
           onClose={closeForm}
           workspaceId={workspaceId}
           currentUser={getUserFromToken()}
+          projectToEdit={selectedProject}
         />
       );
     } else if (modalTitle === FormTitles.INVITE) {
@@ -55,9 +60,7 @@ export default function WorkspaceDashboard() {
   };
 
   const { data: tasks } = useTasks({
-    filterInfo: [
-      { filterKey: FieldsAccessKeys.PROJECTID, filterValue: workspaceId },
-    ],
+    filterInfo: [{ filterKey: "workspaceId ", filterValue: workspaceId }],
   });
   const { data: projects } = useWorkspaceProjects(workspaceId);
   const { data: people } = useWorkspacePeople(workspaceId);
@@ -90,6 +93,10 @@ export default function WorkspaceDashboard() {
                 FieldsAccessKeys.NAME,
                 FieldsAccessKeys.DESCRIPTION,
               ]}
+              onEdit={(projectToEdit: Project) => {
+                openForm(FormTitles.PROJECT, projectToEdit);
+              }}
+              onDelete={ProjectServices.deleteProject}
             />
           </CardContent>
           <CardActions
@@ -120,7 +127,7 @@ export default function WorkspaceDashboard() {
 
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ height: "80%" }}>
-            <MyTable<string> data={people} type={TableTypes.PEOPLE} />
+            <MyTable<{ id: string }> data={people} type={TableTypes.PEOPLE} />
           </CardContent>
           <CardActions
             sx={{ display: "flex", justifyContent: "flex-end", marginRight: 2 }}

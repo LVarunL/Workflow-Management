@@ -2,7 +2,7 @@ import { Project } from "../models/Project";
 import { LocalStorageKeys } from "../common/utils/enums";
 
 class ProjectServicesClass {
-  async getProjects(): Promise<Project[]> {
+  getProjects = async (): Promise<Project[]> => {
     return new Promise((resolve) => {
       let projects = JSON.parse(
         localStorage.getItem(LocalStorageKeys.PROJECTS) || "[]"
@@ -10,19 +10,17 @@ class ProjectServicesClass {
       projects = projects.filter((project: Project) => !project.isDeleted);
       resolve(projects);
     });
-  }
+  };
 
-  async getProjectById(id: string): Promise<Project> {
+  getProjectById = async (id: string): Promise<Project> => {
     return new Promise(async (resolve) => {
       const projects = await this.getProjects();
-
       const project = projects.find((p) => p.id === id) || null;
-
       resolve(project);
     });
-  }
+  };
 
-  async upsertProject(project: Project): Promise<Project> {
+  upsertProject = async (project: Project): Promise<Project> => {
     return new Promise(async (resolve) => {
       let projects = await this.getProjects();
       const existingIndex = projects.findIndex((p) => p.id === project.id);
@@ -36,23 +34,25 @@ class ProjectServicesClass {
       localStorage.setItem(LocalStorageKeys.PROJECTS, JSON.stringify(projects));
       resolve(project);
     });
-  }
+  };
 
-  async getWorkspaceProjects(workspaceId: string): Promise<Project[]> {
+  getWorkspaceProjects = async (workspaceId: string): Promise<Project[]> => {
     return new Promise(async (resolve) => {
       let projects = await this.getProjects();
       projects = projects.filter(
         (project) => project.workspaceId === workspaceId
       );
-
       resolve(projects);
     });
-  }
-  async addUsersToProject(projectId: string, emails: string[]) {
+  };
+
+  addUsersToProject = async (projectId: string, emails: string[]) => {
     return new Promise(async (resolve) => {
       const projects = await this.getProjects();
       const project = projects.find((project) => project.id === projectId);
-      const userList = project.userList;
+      if (!project) return resolve(null);
+
+      const userList = project.userList || [];
       emails.forEach((email) => {
         if (!userList.includes(email)) {
           userList.push(email);
@@ -62,13 +62,24 @@ class ProjectServicesClass {
       localStorage.setItem(LocalStorageKeys.PROJECTS, JSON.stringify(projects));
       resolve(project);
     });
-  }
-  async getAllUsersInProject(projectId: string): Promise<string[]> {
-    return new Promise(async (resolve) => {
-      const project = await this.getProjectById(projectId);
-      resolve(project?.userList || []);
-    });
-  }
+  };
+
+  getAllUsersInProject = async (
+    projectId: string
+  ): Promise<{ id: string }[]> => {
+    const project = await this.getProjectById(projectId);
+    const users = project?.userList.map((user) => ({ id: user })) || [];
+    return users;
+  };
+
+  deleteProject = async (projectId: string) => {
+    console.log("Deleting project...");
+    let projects: Project[] = await this.getProjects();
+    projects = projects.map((project) =>
+      project.id === projectId ? { ...project, isDeleted: true } : project
+    );
+    localStorage.setItem(LocalStorageKeys.PROJECTS, JSON.stringify(projects));
+  };
 }
 
 const ProjectServices = new ProjectServicesClass();

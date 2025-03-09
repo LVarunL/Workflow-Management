@@ -8,21 +8,28 @@ import {
   Table,
   TableCell,
   TableBody,
+  IconButton,
 } from "@mui/material";
 import { TableVirtuoso, TableComponents } from "react-virtuoso";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface RootTableProps<T> {
   data: T[];
   tableConfig: TableConfigs;
   customColumns?: Columns;
   tableHeight?: number;
+  onEdit?: (entityToEdit: T) => void;
+  onDelete?: (id: string) => void | Promise<void>;
 }
 
-export default function RootTable<T>({
+export default function RootTable<T extends { id: string }>({
   data,
   tableConfig,
   customColumns,
   tableHeight = 400,
+  onEdit,
+  onDelete,
 }: RootTableProps<T>) {
   let { getTableField, columns } = tableConfig;
   if (customColumns) {
@@ -62,17 +69,38 @@ export default function RootTable<T>({
           {getTableField(column).label}
         </TableCell>
       ))}
+      <TableCell></TableCell>
+      <TableCell></TableCell>
     </TableRow>
   );
 
-  // Row content renderer
-  const rowContent = (_index: number, row: T) => (
+  const rowContent = (index: number, row: T) => (
     <>
       {columns.map((column, colIndex) => (
         <TableCell key={colIndex}>
           {getTableField(column).renderCell(row)}
         </TableCell>
       ))}
+      {onEdit && (
+        <TableCell>
+          <IconButton
+            onClick={() => onEdit?.(row)}
+            className="transition-all rounded-full p-1 hover:bg-gray-200"
+          >
+            <EditIcon className="text-gray-600" />
+          </IconButton>
+        </TableCell>
+      )}
+      {onDelete && (
+        <TableCell>
+          <IconButton
+            onClick={() => onDelete(row.id)}
+            className="transition-all rounded-full p-1 hover:bg-red-100"
+          >
+            <DeleteIcon className="text-red-600" />
+          </IconButton>
+        </TableCell>
+      )}
     </>
   );
 
