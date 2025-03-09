@@ -121,7 +121,12 @@ export default function ProjectPage() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       ></Tablebar>
-      <MyTable<Task> data={tasks} type={TableTypes.TASK} columns={columns} />
+      <MyTable<Task>
+        data={tasks}
+        type={TableTypes.TASK}
+        columns={columns}
+        tableHeight={850}
+      />
 
       {isOpen && (
         <ModalForm title={modalTitle} isOpen={isOpen} onClose={closeForm}>

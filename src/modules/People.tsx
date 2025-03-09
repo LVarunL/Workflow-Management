@@ -29,6 +29,7 @@ export default function People() {
         data={people}
         type={TableTypes.PEOPLE}
         columns={columns}
+        tableHeight={850}
       />
     </div>
   );

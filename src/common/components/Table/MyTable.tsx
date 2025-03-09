@@ -9,9 +9,15 @@ interface MyTableProps<T> {
   type: TableTypes;
   data: T[];
   columns?: Columns;
+  tableHeight?: number;
 }
 
-export default function MyTable<T>({ type, data, columns }: MyTableProps<T>) {
+export default function MyTable<T>({
+  type,
+  data,
+  columns,
+  tableHeight,
+}: MyTableProps<T>) {
   const tableConfig: TableConfigs = getConfig(type);
 
   return (
@@ -20,6 +26,7 @@ export default function MyTable<T>({ type, data, columns }: MyTableProps<T>) {
         data={data}
         tableConfig={tableConfig}
         customColumns={columns}
+        tableHeight={tableHeight}
       />
     </>
   );

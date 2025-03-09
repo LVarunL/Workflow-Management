@@ -64,13 +64,20 @@ export default function WorkspaceDashboard() {
         sx={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
-          gap: 2,
+          gap: 1,
           height: "90vh",
           paddingTop: 2,
         }}
       >
-        <Card sx={{ height: "100%", overflow: "auto" }}>
-          <CardContent>
+        <Card
+          sx={{
+            height: "100%",
+            overflow: "auto",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <CardContent sx={{ height: "80%" }}>
             <MyTable<Project>
               data={projects}
               type={TableTypes.PROJECT}
@@ -81,7 +88,9 @@ export default function WorkspaceDashboard() {
               ]}
             />
           </CardContent>
-          <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <CardActions
+            sx={{ display: "flex", justifyContent: "flex-end", marginRight: 2 }}
+          >
             <MyButtons.AddButton
               width={50}
               onClick={() => openForm(FormTitles.PROJECT)}
@@ -105,11 +114,13 @@ export default function WorkspaceDashboard() {
           </CardContent>
         </Card>
 
-        <Card sx={{ height: "100%" }}>
-          <CardContent>
+        <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+          <CardContent sx={{ height: "80%" }}>
             <MyTable<string> data={people} type={TableTypes.PEOPLE} />
           </CardContent>
-          <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <CardActions
+            sx={{ display: "flex", justifyContent: "flex-end", marginRight: 2 }}
+          >
             <MyButtons.AddButton
               width={50}
               onClick={() => openForm(FormTitles.INVITE)}
