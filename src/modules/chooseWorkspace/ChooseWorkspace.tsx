@@ -17,9 +17,9 @@ const ChooseWorkspace = () => {
   const { isPending, data } = useWorkspaces(getUserFromToken());
   const workspacesDropdownOptions: Option[] = data?.map((workspace) => ({
     value: workspace.id,
-    name: workspace.workspaceName,
-    description: workspace.workspaceDescription,
-    image: workspace.workspaceImage,
+    name: workspace.name,
+    description: workspace.description,
+    image: workspace.image,
   }));
   const navigate = useNavigate();
   const handleSubmit = () => {

@@ -6,6 +6,7 @@ interface User {
   email: string;
   password: string;
   authToken?: string;
+  isDeleted?: boolean;
 }
 
 class UserModelUtilClass {

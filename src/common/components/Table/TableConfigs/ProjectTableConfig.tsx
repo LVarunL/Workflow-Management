@@ -26,7 +26,7 @@ const ID: Field = {
   label: "ID",
   width: 150,
   renderCell: (data: Project) => (
-    <Tooltip title={data.projectId} arrow>
+    <Tooltip title={data.id} arrow>
       <Link
         style={{
           width: ID.width,
@@ -36,9 +36,9 @@ const ID: Field = {
           cursor: "pointer",
         }}
         // onClick={() => navigate(`/${workspaceId}/${data.projectId}`)}
-        href={`/${workspaceId}/${data.projectId}`}
+        href={`/${workspaceId}/${data.id}`}
       >
-        {data.projectId}
+        {data.id}
       </Link>
     </Tooltip>
   ),
@@ -63,7 +63,7 @@ const Name: Field = {
       onMouseEnter={(e) => (e.currentTarget.style.background = "#f6f6f6")}
       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
     >
-      {data.projectName}
+      {data.name}
     </div>
   ),
   canSort: true,
@@ -76,7 +76,7 @@ const Description: Field = {
   label: "Description",
   width: 150,
   renderCell: (data: Project) => (
-    <Tooltip title={data.projectDescription} arrow>
+    <Tooltip title={data.description} arrow>
       <div
         style={{
           width: Description.width,
@@ -86,7 +86,7 @@ const Description: Field = {
           cursor: "pointer",
         }}
       >
-        {data.projectDescription}
+        {data.description}
       </div>
     </Tooltip>
   ),

@@ -54,7 +54,11 @@ export default function WorkspaceDashboard() {
     }
   };
 
-  const { data: tasks } = useTasks({});
+  const { data: tasks } = useTasks({
+    filterInfo: [
+      { filterKey: FieldsAccessKeys.PROJECTID, filterValue: workspaceId },
+    ],
+  });
   const { data: projects } = useWorkspaceProjects(workspaceId);
   const { data: people } = useWorkspacePeople(workspaceId);
   return (

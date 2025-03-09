@@ -27,10 +27,10 @@ class TaskServicesClass {
     filterInfo,
     searchQuery,
   }: FindTaskProps): Promise<Task[]> {
-    console.log(sortInfo, filterInfo);
     let tasks: Task[] =
       JSON.parse(localStorage.getItem(LocalStorageKeys.TASKS)) || [];
 
+    tasks = tasks.filter((task: Task) => !task.isDeleted);
     if (filterInfo && filterInfo.length > 0) {
       filterInfo.forEach(({ filterKey, filterValue }) => {
         tasks = filterData<Task>({

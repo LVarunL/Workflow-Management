@@ -29,12 +29,12 @@ const CreateWorkspaceForm = ({ onClose }) => {
     }
 
     const currentUser = getUserFromToken();
-    const newWorkspace: any = {
+    const newWorkspace: Workspace = {
       id: uuid(),
-      workspaceName,
-      workspaceDescription,
-      workspaceImage: uploadedImage,
-      userList: [currentUser], //add current user here
+      name: workspaceName,
+      description: workspaceDescription,
+      image: uploadedImage,
+      userList: [currentUser],
     };
 
     mutation.mutate(newWorkspace);

@@ -1,7 +1,8 @@
 export default interface Workspace {
   id: string;
-  workspaceName: string;
-  workspaceDescription: string;
-  workspaceImage?: string;
+  name: string;
+  description: string;
+  image?: string;
   userList: string[];
+  isDeleted?: boolean;
 }

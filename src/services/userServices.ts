@@ -3,7 +3,11 @@ import { LocalStorageKeys } from "../common/utils/enums";
 
 class UserServicesClass {
   getUsers = (): User[] => {
-    return JSON.parse(localStorage.getItem(LocalStorageKeys.USERS) || "[]");
+    let users: User[] = JSON.parse(
+      localStorage.getItem(LocalStorageKeys.USERS) || "[]"
+    );
+    users = users.filter((user) => !user.isDeleted);
+    return users;
   };
 
   isEmailRegistered = (email: string): boolean => {

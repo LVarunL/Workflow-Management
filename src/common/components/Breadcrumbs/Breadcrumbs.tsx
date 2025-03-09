@@ -44,13 +44,11 @@ export default function MyBreadcrumbs({
         sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
         color={project || context ? "textSecondary" : "textPrimary"}
       >
-        {workspace?.workspaceImage ? (
-          <img src={workspace?.workspaceImage} width={24} height={24}></img>
-        ) : (
-          <WorkspacesIcon fontSize="inherit" />
-        )}
+        {/* {workspace?.image && (
+          <img src={workspace?.image} width={24} height={24}></img>
+        )} */}
 
-        {workspace?.workspaceName}
+        {workspace?.name}
       </Link>
 
       {project && (
@@ -64,7 +62,7 @@ export default function MyBreadcrumbs({
           underline="none"
         >
           <FolderIcon fontSize="inherit" />
-          {project?.projectName}
+          {project?.name}
         </Link>
       )}
 

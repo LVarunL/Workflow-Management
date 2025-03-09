@@ -39,11 +39,11 @@ const WorkspaceHeader = () => {
         paddingY: 1,
       }}
     >
-      {workspace?.workspaceImage && (
-        <img src={workspace?.workspaceImage} width={36} height={36} alt="" />
-      )}
+      {/* {workspace?.image && (
+        <img src={workspace?.image} width={36} height={36} alt="" />
+      )} */}
 
-      <h1 className="text-2xl font-bold">{workspace?.workspaceName}</h1>
+      <h1 className="text-2xl font-bold">{workspace?.name}</h1>
 
       <Button
         variant="contained"

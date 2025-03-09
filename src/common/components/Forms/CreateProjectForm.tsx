@@ -43,10 +43,10 @@ const CreateProjectForm = ({
     }
 
     const newProject: Project = {
-      projectId: uuid(),
+      id: uuid(),
       workspaceId,
-      projectName,
-      projectDescription,
+      name: projectName,
+      description: projectDescription,
       creationTime: new Date(),
       createdBy: currentUser,
       userList: [currentUser],

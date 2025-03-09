@@ -16,7 +16,7 @@ const useCreateProject = (workspaceId: string) => {
     onSuccess: (project) => {
       showToast("Project created successfully", ToastSeverity.SUCCESS);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.PROJECTS] });
-      navigate(`/${workspaceId}/${project.projectId}`);
+      navigate(`/${workspaceId}/${project.id}`);
     },
   });
 };

@@ -1,12 +1,13 @@
 import { User } from "./User";
 export interface Project {
-  projectId: string;
+  id: string;
   workspaceId: string;
-  projectName: string;
-  projectDescription: string;
+  name: string;
+  description: string;
   creationTime: Date;
   createdBy: string;
   userList: Array<string>;
   lastModifiedBy?: string;
   lastModifiedTime?: Date;
+  isDeleted?: boolean;
 }

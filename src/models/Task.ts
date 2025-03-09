@@ -13,4 +13,5 @@ export interface Task {
   deadline: Date;
   projectId: string;
   workspaceId: string;
+  isDeleted?: boolean;
 }

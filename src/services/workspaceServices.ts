@@ -3,9 +3,10 @@ import { LocalStorageKeys } from "../common/utils/enums";
 class WorkspaceServicesClass {
   async getWorkspaces(): Promise<Workspace[]> {
     return new Promise((resolve) => {
-      const workspaces = JSON.parse(
+      let workspaces: Workspace[] = JSON.parse(
         localStorage.getItem(LocalStorageKeys.WORKSPACES) || "[]"
       );
+      workspaces = workspaces.filter((workspace) => !workspace.isDeleted);
       resolve(workspaces);
     });
   }

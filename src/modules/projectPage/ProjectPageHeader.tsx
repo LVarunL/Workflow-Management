@@ -31,7 +31,7 @@ const ProjectHeader = () => {
         }}
       >
         <Typography variant="h6" fontWeight={600}>
-          {project?.projectName || "Project"}
+          {project?.name || "Project"}
         </Typography>
 
         <Button variant="contained" size="small" onClick={handleGoToPeople}>

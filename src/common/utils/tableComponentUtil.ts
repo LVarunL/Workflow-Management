@@ -35,16 +35,7 @@ export interface TableConfigs {
 }
 
 export const getRandomColor = (value: string) => {
-  const colors = [
-    "#F44336",
-    "#E91E63",
-    "#9C27B0",
-    "#3F51B5",
-    "#03A9F4",
-    "#4CAF50",
-    "#FFC107",
-    "#FF5722",
-  ];
+  const colors = ["#dcf0e4", "#cab5ed", "#f6bfd0", "#b1d5ef", "#aed964"];
   let hash = 0;
   for (let i = 0; i < value.length; i++) {
     hash = value.charCodeAt(i) + ((hash << 5) - hash);

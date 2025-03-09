@@ -114,13 +114,16 @@ export default function ProjectPage() {
         params.projectId !== "people" && <div>{params.projectId}</div>} */}
 
       <ProjectHeader />
+
       {/* <Button variant="contained" onClick={() => openForm(FormTitles.TASK)}>
         Add Task
       </Button> */}
-      <Tablebar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      ></Tablebar>
+      {projectId !== "alltasks" && projectId !== "alltasks" && (
+        <Tablebar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        ></Tablebar>
+      )}
       <MyTable<Task>
         data={tasks}
         type={TableTypes.TASK}

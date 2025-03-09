@@ -59,16 +59,11 @@ export default function Sidebar() {
           onClick={() => navigate(`/${workspaceId}`)}
           underline="none"
         >
-          {workspace?.workspaceImage && (
-            <img
-              src={workspace?.workspaceImage}
-              width={24}
-              height={24}
-              alt=""
-            />
-          )}
+          {/* {workspace?.image && (
+            <img src={workspace?.image} width={24} height={24} alt="" />
+          )} */}
 
-          {workspace?.workspaceName}
+          {workspace?.name}
         </Link>
 
         <Divider sx={{ marginBottom: 1 }} />
@@ -97,10 +92,10 @@ export default function Sidebar() {
         <List>
           {projects?.slice(0, 10).map((project) => (
             <SidebarItem
-              key={project.projectId}
+              key={project.id}
               icon={<Folder fontSize="small" />}
-              text={project?.projectName}
-              onClick={() => navigate(`/${workspaceId}/${project.projectId}`)}
+              text={project?.name}
+              onClick={() => navigate(`/${workspaceId}/${project.id}`)}
               nested
             />
           ))}
