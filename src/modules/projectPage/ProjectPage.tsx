@@ -8,7 +8,10 @@ import { FormTitles, TableTypes } from "../../common/utils/enums";
 import useTasks, { UseTasksParams } from "../../hooks/queries/task/useTasks";
 import { sortInfo, filterInfo } from "../../services/taskServices";
 import { Task } from "../../models/Task";
-import { FieldsAccessKeys } from "../../common/utils/tableComponentUtil";
+import {
+  Columns,
+  FieldsAccessKeys,
+} from "../../common/utils/tableComponentUtil";
 import { getUserFromToken } from "../../common/utils/authUtil";
 import ProjectHeader from "./ProjectPageHeader";
 import { useUsers } from "../../hooks/queries/user/useUsers";
@@ -86,6 +89,19 @@ export default function ProjectPage() {
     }
     return params;
   };
+  const columns: Columns = [
+    FieldsAccessKeys.ID,
+    FieldsAccessKeys.NAME,
+    FieldsAccessKeys.DESCRIPTION,
+    FieldsAccessKeys.STATUS,
+    FieldsAccessKeys.PRIORITY,
+    FieldsAccessKeys.ASSIGNEDTO,
+    FieldsAccessKeys.CREATEDBY,
+    // FieldsAccessKeys.LASTMODIFIEDBY,
+    // FieldsAccessKeys.CREATIONTIME,
+    FieldsAccessKeys.DEADLINE,
+    // FieldsAccessKeys.LASTMODIFIEDTIME,
+  ];
   const { data: tasks, isPending } = useTasks(getTaskQueryParams());
   console.log(tasks);
   return (
@@ -104,9 +120,8 @@ export default function ProjectPage() {
       <Tablebar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        setFilterQuery={setFilterInfo}
       ></Tablebar>
-      <MyTable<Task> data={tasks} type={TableTypes.TASK} />
+      <MyTable<Task> data={tasks} type={TableTypes.TASK} columns={columns} />
 
       {isOpen && (
         <ModalForm title={modalTitle} isOpen={isOpen} onClose={closeForm}>

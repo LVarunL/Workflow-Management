@@ -1,5 +1,5 @@
 import React from "react";
-import { TableConfigs } from "../../utils/tableComponentUtil";
+import { Columns, TableConfigs } from "../../utils/tableComponentUtil";
 import {
   Paper,
   TableContainer,
@@ -13,9 +13,17 @@ import {
 interface RootTableProps<T> {
   data: T[];
   tableConfig: TableConfigs;
+  customColumns?: Columns;
 }
-export default function RootTable<T>({ data, tableConfig }: RootTableProps<T>) {
-  const { getTableField, columns } = tableConfig;
+export default function RootTable<T>({
+  data,
+  tableConfig,
+  customColumns,
+}: RootTableProps<T>) {
+  let { getTableField, columns } = tableConfig;
+  if (customColumns) {
+    columns = customColumns;
+  }
   return (
     <TableContainer component={Paper}>
       <Table>

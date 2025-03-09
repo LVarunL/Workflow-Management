@@ -25,8 +25,9 @@ const TaskTableColumns: Columns = [
 
 const ID: Field = {
   label: "ID",
+  width: 80,
   renderCell: (data: Task) => (
-    <Tooltip title={data.id} arrow>
+    <Tooltip title={data.id} arrow sx={{ width: ID.width }}>
       <div
         style={{
           width: 80,
@@ -48,6 +49,7 @@ const ID: Field = {
 
 const Name: Field = {
   label: "Name",
+  width: 100,
   renderCell: (data: Task) => (
     <div
       style={{
@@ -55,7 +57,7 @@ const Name: Field = {
         cursor: "pointer",
         padding: "4px 8px",
         borderRadius: 4,
-        transition: "background 0.2s ease-in-out",
+        width: Name.width,
       }}
       onMouseEnter={(e) => (e.currentTarget.style.background = "#f6f6f6")}
       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
@@ -71,15 +73,20 @@ const Name: Field = {
 
 const Description: Field = {
   label: "Description",
+  width: 150,
   renderCell: (data: Task) => (
-    <Tooltip title={data.description} arrow>
+    <Tooltip
+      title={data.description}
+      style={{ width: Description.width }}
+      arrow
+    >
       <div
         style={{
-          maxWidth: 200,
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
           cursor: "pointer",
+          width: Description.width,
         }}
       >
         {data.description}
@@ -94,6 +101,7 @@ const Description: Field = {
 
 const Status: Field = {
   label: "Status",
+  width: 100,
   renderCell: (data: Task) => {
     const getMUIChipColorFromStatus = (taskStatus: TaskStatus) => {
       switch (taskStatus) {
@@ -118,6 +126,7 @@ const Status: Field = {
           fontWeight: 500,
           borderRadius: 8,
         }}
+        sx={{ width: Status.width }}
       />
     );
   },
@@ -129,6 +138,7 @@ const Status: Field = {
 
 const Priority: Field = {
   label: "Priority",
+  width: 80,
   renderCell: (data: Task) => {
     const getMUIChipColorFromPriority = (taskpriority: TaskPriority) => {
       switch (taskpriority) {
@@ -150,6 +160,7 @@ const Priority: Field = {
         style={{
           fontWeight: 500,
           borderRadius: 8,
+          width: Priority.width,
         }}
       />
     );
@@ -161,9 +172,10 @@ const Priority: Field = {
 };
 
 const AssignedTo: Field = {
-  label: "Assigned To",
+  label: "Assignee",
+  width: 30,
   renderCell: (data: Task) => (
-    <Tooltip title={data.assignedTo} arrow>
+    <Tooltip title={data.assignedTo} arrow style={{ width: AssignedTo.width }}>
       <div
         className="w-8 h-8 rounded-full flex items-center justify-center font-medium text-sm text-white"
         style={{ backgroundColor: getRandomColor(data.assignedTo) }}
@@ -180,8 +192,9 @@ const AssignedTo: Field = {
 
 const CreatedBy: Field = {
   label: "Created By",
+  width: 30,
   renderCell: (data: Task) => (
-    <Tooltip title={data.createdBy} arrow>
+    <Tooltip title={data.createdBy} arrow style={{ width: CreatedBy.width }}>
       <div
         className="w-8 h-8 rounded-full flex items-center justify-center font-medium text-sm text-white"
         style={{ backgroundColor: getRandomColor(data.assignedTo) }}
@@ -197,9 +210,14 @@ const CreatedBy: Field = {
 };
 
 const LastModifiedBy: Field = {
-  label: "Last Modified By",
+  label: "Mofified By",
+  width: 30,
   renderCell: (data: Task) => (
-    <Tooltip title={data.lastModifiedBy} arrow>
+    <Tooltip
+      title={data.lastModifiedBy}
+      arrow
+      style={{ width: LastModifiedBy.width }}
+    >
       <div
         className="w-8 h-8 rounded-full flex items-center justify-center font-medium text-sm text-white"
         style={{ backgroundColor: getRandomColor(data.assignedTo) }}
@@ -216,11 +234,16 @@ const LastModifiedBy: Field = {
 
 const CreationTime: Field = {
   label: "Created On",
+  width: 50,
   renderCell: (data: Task) => (
-    <Tooltip title={new Date(data.creationTime).toLocaleString()} arrow>
-      <span>
+    <Tooltip
+      title={new Date(data.creationTime).toLocaleString()}
+      arrow
+      style={{ maxWidth: CreationTime.width }}
+    >
+      <span style={{ width: CreationTime.width }}>
         {new Intl.DateTimeFormat("en-US", {
-          dateStyle: "medium",
+          dateStyle: "short",
           timeStyle: "short",
         }).format(new Date(data.creationTime))}
       </span>
@@ -234,20 +257,26 @@ const CreationTime: Field = {
 
 const Deadline: Field = {
   label: "Deadline",
+  width: 150,
   renderCell: (data: Task) => {
     const deadlineDate = new Date(data.deadline);
     const isOverdue = deadlineDate < new Date();
 
     return (
-      <Tooltip title={deadlineDate.toLocaleString()} arrow>
+      <Tooltip
+        title={deadlineDate.toLocaleString()}
+        arrow
+        style={{ width: Deadline.width }}
+      >
         <Chip
           label={new Intl.DateTimeFormat("en-US", {
-            dateStyle: "medium",
+            dateStyle: "short",
             timeStyle: "short",
           }).format(deadlineDate)}
           color={isOverdue ? "error" : "default"}
           size="small"
           variant="outlined"
+          style={{ width: Deadline.width }}
         />
       </Tooltip>
     );
@@ -260,11 +289,16 @@ const Deadline: Field = {
 
 const LastModifiedTime: Field = {
   label: "Last Modified On",
+  width: 150,
   renderCell: (data: Task) => (
-    <Tooltip title={new Date(data.lastModifiedTime).toLocaleString()} arrow>
-      <span>
+    <Tooltip
+      title={new Date(data.lastModifiedTime).toLocaleString()}
+      arrow
+      style={{ width: LastModifiedBy.width }}
+    >
+      <span style={{ width: LastModifiedTime.width }}>
         {new Intl.DateTimeFormat("en-US", {
-          dateStyle: "medium",
+          dateStyle: "short",
           timeStyle: "short",
         }).format(new Date(data.lastModifiedTime))}
       </span>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Paper, Card, CardActions, CardContent } from "@mui/material";
 import MyButtons from "../../common/components/Buttons/Buttons";
 import ModalForm from "../../hooks/FormModal";
-import { FormTitles, QueryKeys } from "../../common/utils/enums";
+import { FormTitles, QueryKeys, TableTypes } from "../../common/utils/enums";
 import { title } from "process";
 import CreateProjectForm from "../../common/components/Forms/CreateProjectForm";
 import InviteUsersForm from "../../common/components/Forms/InviteUserForm";
@@ -11,10 +11,17 @@ import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getUserFromToken } from "../../common/utils/authUtil";
 import WorkspaceHeader from "./WorkspaceDashboardHeader";
+import useTasks from "../../hooks/queries/task/useTasks";
+import { FieldsAccessKeys } from "../../common/utils/tableComponentUtil";
+import useWorkspaceProjects from "../../hooks/queries/project/useWorkspaceProjects";
+import useWorkspacePeople from "../../hooks/queries/workspace/useWorkspacePeople";
+import MyTable from "../../common/components/Table/MyTable";
+import { Project } from "../../models/Project";
+import { Task } from "../../models/Task";
 
 export default function WorkspaceDashboard() {
   const params = useParams();
-  const currentWorkspaceId = params.workspaceId;
+  const workspaceId = params.workspaceId;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<FormTitles | null>(null);
   const openForm = function (title: FormTitles) {
@@ -31,7 +38,7 @@ export default function WorkspaceDashboard() {
       return (
         <CreateProjectForm
           onClose={closeForm}
-          workspaceId={currentWorkspaceId}
+          workspaceId={workspaceId}
           currentUser={getUserFromToken()}
         />
       );
@@ -40,96 +47,84 @@ export default function WorkspaceDashboard() {
         <InviteUsersForm
           type="workspace"
           onClose={closeForm}
-          entityId={currentWorkspaceId}
+          entityId={workspaceId}
         />
       );
       //   else if(modalTitle===FormTitles.)
     }
   };
+
+  const { data: tasks } = useTasks({});
+  const { data: projects } = useWorkspaceProjects(workspaceId);
+  const { data: people } = useWorkspacePeople(workspaceId);
   return (
     <>
       <WorkspaceHeader />
       <Box
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: 2,
           height: "90vh",
+          paddingTop: 2,
         }}
       >
-        <Card
-          sx={{
-            display: "flex",
-            minWidth: "50%",
-            height: "50%",
-            justifyContent: "space-between",
-          }}
-        >
-          <CardContent>Projects</CardContent>
-          <CardActions
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "flex-start",
-            }}
-          >
+        <Card sx={{ height: "100%", overflow: "auto" }}>
+          <CardContent>
+            <MyTable<Project>
+              data={projects}
+              type={TableTypes.PROJECT}
+              columns={[
+                FieldsAccessKeys.ID,
+                FieldsAccessKeys.NAME,
+                FieldsAccessKeys.DESCRIPTION,
+              ]}
+            />
+          </CardContent>
+          <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
             <MyButtons.AddButton
               width={50}
               onClick={() => openForm(FormTitles.PROJECT)}
             />
           </CardActions>
         </Card>
-        <Card
-          sx={{
-            display: "flex",
-            minWidth: "50%",
-            height: "50%",
-            justifyContent: "space-between",
-          }}
-        >
-          <CardContent>My Tasks</CardContent>
+
+        <Card sx={{ height: "100%", overflow: "auto" }}>
+          <CardContent>
+            <MyTable<Task>
+              data={tasks}
+              type={TableTypes.TASK}
+              columns={[
+                FieldsAccessKeys.NAME,
+                FieldsAccessKeys.DEADLINE,
+                FieldsAccessKeys.ASSIGNEDTO,
+                FieldsAccessKeys.PRIORITY,
+                FieldsAccessKeys.STATUS,
+              ]}
+            />
+          </CardContent>
         </Card>
-        <Card
-          sx={{
-            display: "flex",
-            minWidth: "50%",
-            height: "50%",
-            justifyContent: "space-between",
-          }}
-        >
-          <CardContent>People</CardContent>
-          <CardActions
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "flex-start",
-            }}
-          >
+
+        <Card sx={{ height: "100%" }}>
+          <CardContent>
+            <MyTable<string> data={people} type={TableTypes.PEOPLE} />
+          </CardContent>
+          <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
             <MyButtons.AddButton
               width={50}
               onClick={() => openForm(FormTitles.INVITE)}
             />
           </CardActions>
         </Card>
-        <Card
-          sx={{
-            display: "flex",
-            minWidth: "50%",
-            height: "50%",
-            justifyContent: "space-between",
-          }}
-        >
+
+        <Card sx={{ height: "100%" }}>
           <CardContent>Messages</CardContent>
-          <CardActions
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "flex-start",
-            }}
-          >
+          <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
             <MyButtons.AddButton width={50} disabled />
           </CardActions>
         </Card>
       </Box>
+
       {isOpen && (
         <ModalForm title={modalTitle} isOpen={isOpen} onClose={closeForm}>
           {getFormToOpen()}

@@ -12,13 +12,11 @@ import useProjectPeople from "../../../hooks/queries/project/useProjectPeople";
 interface TablebarProps {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  setFilterQuery: React.Dispatch<React.SetStateAction<any>>; // Placeholder for filter logic
 }
 
 export default function Tablebar({
   searchQuery,
   setSearchQuery,
-  setFilterQuery,
 }: TablebarProps) {
   const { viewTypeToggle } = useViewTypeToggle();
   const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);

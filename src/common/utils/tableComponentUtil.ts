@@ -14,6 +14,7 @@ export enum FieldsAccessKeys {
   DEADLINE = "DEADLINE",
   PROJECTID = "PROJECTID",
   WORKSPACEID = "WORKSPACEID",
+  EMAIL = "EMAIL",
 }
 
 export interface Field {
@@ -23,12 +24,13 @@ export interface Field {
   canFilter: boolean;
   isVisible: boolean;
   accessKey: FieldsAccessKeys;
+  width: number;
 }
 
 export type Columns = FieldsAccessKeys[];
 
 export interface TableConfigs {
-  columns: Columns;
+  columns?: Columns;
   getTableField: (accessKey: FieldsAccessKeys) => Field;
 }
 

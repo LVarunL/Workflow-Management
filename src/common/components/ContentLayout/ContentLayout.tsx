@@ -14,7 +14,7 @@ export default function ContentLayout() {
       <Stack sx={{ width: "88%" }}>
         <Topbar></Topbar>
         <Outlet />
-        <Footer></Footer>
+        {/* <Footer></Footer> */}
       </Stack>
     </Stack>
   );

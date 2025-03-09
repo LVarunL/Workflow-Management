@@ -7,4 +7,6 @@ export interface Project {
   creationTime: Date;
   createdBy: string;
   userList: Array<string>;
+  lastModifiedBy?: string;
+  lastModifiedTime?: Date;
 }

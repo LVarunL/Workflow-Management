@@ -1,6 +1,8 @@
+import PeopleTableConfig from "../components/Table/TableConfigs/PeopleTableConfig";
+import ProjectTableConfigs from "../components/Table/TableConfigs/ProjectTableConfig";
 import TaskTableConfigs from "../components/Table/TableConfigs/TaskTableConfigs";
 import { TableTypes } from "./enums";
-import { TableConfigs } from "./tableComponentUtil";
+import { Field, TableConfigs } from "./tableComponentUtil";
 
 interface SortDataParams<T> {
   data: T[];
@@ -56,8 +58,13 @@ export function searchData<T extends { id: number | string; name?: string }>({
 }
 
 export function getConfig(type: TableTypes): TableConfigs {
-  if (type === TableTypes.PROJECT) {
-    return TaskTableConfigs;
+  switch (type) {
+    case TableTypes.TASK:
+      return TaskTableConfigs;
+    case TableTypes.PROJECT:
+      return ProjectTableConfigs;
+    case TableTypes.PEOPLE:
+      return PeopleTableConfig;
   }
   return TaskTableConfigs;
 }
