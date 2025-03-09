@@ -1,18 +1,45 @@
 import { Task } from "../../../../models/Task";
+import { TaskPriority, TaskStatus } from "../../../utils/enums";
 import {
   Field,
   FieldsAccessKeys,
+  getRandomColor,
   TableConfigs,
 } from "../../../utils/tableComponentUtil";
 import { Columns } from "../../../utils/tableComponentUtil";
 
-const TaskTableColumns: Columns = [FieldsAccessKeys.ID, FieldsAccessKeys.NAME];
+import { Tooltip, Chip, Avatar, Stack } from "@mui/material";
+const TaskTableColumns: Columns = [
+  FieldsAccessKeys.ID,
+  FieldsAccessKeys.NAME,
+  FieldsAccessKeys.DESCRIPTION,
+  FieldsAccessKeys.STATUS,
+  FieldsAccessKeys.PRIORITY,
+  FieldsAccessKeys.ASSIGNEDTO,
+  FieldsAccessKeys.CREATEDBY,
+  FieldsAccessKeys.LASTMODIFIEDBY,
+  FieldsAccessKeys.CREATIONTIME,
+  FieldsAccessKeys.DEADLINE,
+  FieldsAccessKeys.LASTMODIFIEDTIME,
+];
 
 const ID: Field = {
-  label: "id",
-  renderCell: (data: Task) => {
-    return <span>{data.id}</span>;
-  },
+  label: "ID",
+  renderCell: (data: Task) => (
+    <Tooltip title={data.id} arrow>
+      <div
+        style={{
+          width: 80,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          cursor: "pointer",
+        }}
+      >
+        {data.id}
+      </div>
+    </Tooltip>
+  ),
   canSort: true,
   canFilter: true,
   isVisible: true,
@@ -21,16 +48,235 @@ const ID: Field = {
 
 const Name: Field = {
   label: "Name",
-  renderCell: (data: Task) => {
-    return <span style={{ fontWeight: 10 }}>{data.name}</span>;
-  },
+  renderCell: (data: Task) => (
+    <div
+      style={{
+        fontWeight: 500,
+        cursor: "pointer",
+        padding: "4px 8px",
+        borderRadius: 4,
+        transition: "background 0.2s ease-in-out",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#f6f6f6")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      {data.name}
+    </div>
+  ),
   canSort: true,
   canFilter: true,
   isVisible: true,
   accessKey: FieldsAccessKeys.NAME,
 };
 
-// const TaskTableFields: Field[] = [ID, Name];
+const Description: Field = {
+  label: "Description",
+  renderCell: (data: Task) => (
+    <Tooltip title={data.description} arrow>
+      <div
+        style={{
+          maxWidth: 200,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          cursor: "pointer",
+        }}
+      >
+        {data.description}
+      </div>
+    </Tooltip>
+  ),
+  canSort: false,
+  canFilter: false,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.DESCRIPTION,
+};
+
+const Status: Field = {
+  label: "Status",
+  renderCell: (data: Task) => {
+    const getMUIChipColorFromStatus = (taskStatus: TaskStatus) => {
+      switch (taskStatus) {
+        case TaskStatus.NOT_STARTED:
+          return "error";
+        case TaskStatus.IN_PROGRESS:
+          return "secondary";
+        case TaskStatus.IN_REVIEW:
+          return "warning";
+        case TaskStatus.COMPLETED:
+          return "success";
+      }
+    };
+
+    return (
+      <Chip
+        label={data.status}
+        variant="outlined"
+        size="small"
+        color={getMUIChipColorFromStatus(data.status)}
+        style={{
+          fontWeight: 500,
+          borderRadius: 8,
+        }}
+      />
+    );
+  },
+  canSort: false,
+  canFilter: true,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.STATUS,
+};
+
+const Priority: Field = {
+  label: "Priority",
+  renderCell: (data: Task) => {
+    const getMUIChipColorFromPriority = (taskpriority: TaskPriority) => {
+      switch (taskpriority) {
+        case TaskPriority.LOW:
+          return "success";
+        case TaskPriority.MEDIUM:
+          return "warning";
+        case TaskPriority.HIGH:
+          return "error";
+      }
+    };
+
+    return (
+      <Chip
+        label={data.priority}
+        color={getMUIChipColorFromPriority(data.priority)}
+        size="small"
+        variant="filled"
+        style={{
+          fontWeight: 500,
+          borderRadius: 8,
+        }}
+      />
+    );
+  },
+  canSort: true,
+  canFilter: true,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.PRIORITY,
+};
+
+const AssignedTo: Field = {
+  label: "Assigned To",
+  renderCell: (data: Task) => (
+    <Tooltip title={data.assignedTo} arrow>
+      <div
+        className="w-8 h-8 rounded-full flex items-center justify-center font-medium text-sm text-white"
+        style={{ backgroundColor: getRandomColor(data.assignedTo) }}
+      >
+        {data.assignedTo.charAt(0).toUpperCase()}
+      </div>
+    </Tooltip>
+  ),
+  canSort: false,
+  canFilter: true,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.ASSIGNEDTO,
+};
+
+const CreatedBy: Field = {
+  label: "Created By",
+  renderCell: (data: Task) => (
+    <Tooltip title={data.createdBy} arrow>
+      <div
+        className="w-8 h-8 rounded-full flex items-center justify-center font-medium text-sm text-white"
+        style={{ backgroundColor: getRandomColor(data.assignedTo) }}
+      >
+        {data.createdBy.charAt(0).toUpperCase()}
+      </div>
+    </Tooltip>
+  ),
+  canSort: false,
+  canFilter: true,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.CREATEDBY,
+};
+
+const LastModifiedBy: Field = {
+  label: "Last Modified By",
+  renderCell: (data: Task) => (
+    <Tooltip title={data.lastModifiedBy} arrow>
+      <div
+        className="w-8 h-8 rounded-full flex items-center justify-center font-medium text-sm text-white"
+        style={{ backgroundColor: getRandomColor(data.assignedTo) }}
+      >
+        {data.lastModifiedBy.charAt(0).toUpperCase()}
+      </div>
+    </Tooltip>
+  ),
+  canSort: false,
+  canFilter: true,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.LASTMODIFIEDBY,
+};
+
+const CreationTime: Field = {
+  label: "Created On",
+  renderCell: (data: Task) => (
+    <Tooltip title={new Date(data.creationTime).toLocaleString()} arrow>
+      <span>
+        {new Intl.DateTimeFormat("en-US", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(new Date(data.creationTime))}
+      </span>
+    </Tooltip>
+  ),
+  canSort: true,
+  canFilter: false,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.CREATIONTIME,
+};
+
+const Deadline: Field = {
+  label: "Deadline",
+  renderCell: (data: Task) => {
+    const deadlineDate = new Date(data.deadline);
+    const isOverdue = deadlineDate < new Date();
+
+    return (
+      <Tooltip title={deadlineDate.toLocaleString()} arrow>
+        <Chip
+          label={new Intl.DateTimeFormat("en-US", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          }).format(deadlineDate)}
+          color={isOverdue ? "error" : "default"}
+          size="small"
+          variant="outlined"
+        />
+      </Tooltip>
+    );
+  },
+  canSort: true,
+  canFilter: true,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.DEADLINE,
+};
+
+const LastModifiedTime: Field = {
+  label: "Last Modified On",
+  renderCell: (data: Task) => (
+    <Tooltip title={new Date(data.lastModifiedTime).toLocaleString()} arrow>
+      <span>
+        {new Intl.DateTimeFormat("en-US", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(new Date(data.lastModifiedTime))}
+      </span>
+    </Tooltip>
+  ),
+  canSort: true,
+  canFilter: false,
+  isVisible: true,
+  accessKey: FieldsAccessKeys.LASTMODIFIEDTIME,
+};
+
+// FieldsAccessKeys.;
 
 const getTaskTableField = (accessKey: FieldsAccessKeys): Field => {
   switch (accessKey) {
@@ -38,6 +284,24 @@ const getTaskTableField = (accessKey: FieldsAccessKeys): Field => {
       return ID;
     case FieldsAccessKeys.NAME:
       return Name;
+    case FieldsAccessKeys.DESCRIPTION:
+      return Description;
+    case FieldsAccessKeys.STATUS:
+      return Status;
+    case FieldsAccessKeys.PRIORITY:
+      return Priority;
+    case FieldsAccessKeys.ASSIGNEDTO:
+      return AssignedTo;
+    case FieldsAccessKeys.CREATEDBY:
+      return CreatedBy;
+    case FieldsAccessKeys.LASTMODIFIEDBY:
+      return LastModifiedBy;
+    case FieldsAccessKeys.CREATIONTIME:
+      return CreationTime;
+    case FieldsAccessKeys.DEADLINE:
+      return Deadline;
+    case FieldsAccessKeys.LASTMODIFIEDTIME:
+      return LastModifiedTime;
   }
 };
 

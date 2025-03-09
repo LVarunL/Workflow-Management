@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import React from 'react';
 import App from "./App"
-
+import './style.css';
 function Index() {
     return <App />;
 }
